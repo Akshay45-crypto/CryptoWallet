@@ -227,8 +227,7 @@
 
             // Address validation logic based on the selected coin
             if (coin === "Bitcoin") {
-                // isValid = isValidBitcoinAddress(address);  // Remove default btc validation
-                isValid = isValidRawBitcoinAddress(address)  // Implements your address type validation
+                isValid = isValidBitcoinAddress(address);
             } else if (coin === "Ethereum") {
                 isValid = isValidEthereumAddress(address);
             } else if (coin === "USDT") {
@@ -281,19 +280,19 @@
 
             // Send data to the backend using fetch
             fetch('/send_crypto', {  // Replace '/send_crypto' with your actual backend endpoint
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(sendData)
-            })
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(sendData)
+                })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        alert(data.message);  // Display success message
+                        alert(data.message); // Display success message
                         // Optionally redirect or update the UI
                     } else {
-                        alert(data.error);    // Display error message
+                        alert(data.error); // Display error message
                     }
                 })
                 .catch(error => {
@@ -305,8 +304,20 @@
 
         // Implement functions to validate different types of addresses
         function isValidBitcoinAddress(address) {
-            // Basic Bitcoin address validation using regular expression
-            return /^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$/.test(address);
+            // From https://github.com/bitcoinjs/bitcoinjs-lib
+            try {
+                //Try to decode the address using both Base58 and Bech32 formats.
+                 bitcoin.address.toOutputScript(address, bitcoin.networks.bitcoin);
+                return true;
+            } catch (e) {
+              try{
+                 bitcoin.address.toOutputScript(address, bitcoin.networks.testnet);
+                 return true
+              }catch(e){
+                return false;
+              }
+
+            }
         }
 
         function isValidEthereumAddress(address) {
@@ -323,15 +334,8 @@
             // Basic Dogecoin address validation using regular expression
             return /^D[A-Za-z0-9]{33}$/.test(address);
         }
-
-        function isValidBitcoinAddress(address) {
-            // Basic Bitcoin address validation using regular expression
-            return /^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$/.test(address);
-        }
-        function isValidRawBitcoinAddress(address) {
-            return false
-        }
     </script>
+     <script src="https://cdn.jsdelivr.net/npm/bitcoinjs-lib@6.1.0/index.min.js"></script>
 </body>
 
 </html>

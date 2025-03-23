@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,7 +15,8 @@
         }
 
         body {
-            background: #f5f5f5; /* Changed to a light gray */
+            background: #f5f5f5;
+            /* Changed to a light gray */
         }
 
         /* Updated styles */
@@ -49,8 +51,40 @@
             max-width: 1000px;
             margin: 2rem auto;
             padding: 0 2rem;
+            display: flex; /* Enable flexbox for main container */
+            gap: 2rem; /* Add gap between balance card/assets and transactions */
         }
 
+        .balance-and-assets {
+            flex: 2; /* Take up 2/3 of the space */
+        }
+
+        .transactions {
+            flex: 1; /* Take up 1/3 of the space */
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow-y: auto; /* Enable scrolling if transactions overflow */
+            max-height: 500px; /* Limit the height of the container */
+        }
+
+        .transactions h2 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+
+        .transaction-item {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #eaeaea;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
         .balance-card {
             background: white;
             padding: 2rem;
@@ -102,7 +136,7 @@
         }
 
         .assets-card {
-            background: white;
+            background: rgb(255, 255, 255);
             padding: 1.5rem;
             border-radius: 12px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Added subtle shadow */
@@ -179,70 +213,89 @@
             position: absolute; /* Relative to the profile-image */
             top: 100%; /* Position below the image */
             right: 0; /* Align to the right edge of the image */
-            background: #f2f2f2;  /* Light gray background */
+            background: #f2f2f2;
+            /* Light gray background */
             padding: 1rem;
             border: 1px solid #ccc;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); /* Stronger shadow */
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            /* Stronger shadow */
             z-index: 1000; /* Ensure it's on top of everything */
-            display: none; /* Hidden by default */
+            display: none;
+            /* Hidden by default */
             width: 300px;
-            border-radius: 5px; /* Rounded corners */
+            border-radius: 5px;
+            /* Rounded corners */
             text-align: left;
 
         }
 
         .profile-popup h2 {
-            margin-bottom: 0.5rem; /* Reduced margin */
+            margin-bottom: 0.5rem;
+            /* Reduced margin */
             font-size: 1rem;
-            color: #333; /* Darker text */
-            border-bottom: 1px solid #ddd; /* Add a subtle divider */
+            color: #333;
+            /* Darker text */
+            border-bottom: 1px solid #ddd;
+            /* Add a subtle divider */
             padding-bottom: 0.3rem;
         }
 
         .profile-popup p {
-            margin-bottom: 0.3rem; /* Reduced margin */
+            margin-bottom: 0.3rem;
+            /* Reduced margin */
             color: #555;
         }
-        .profile-popup p strong{
+
+        .profile-popup p strong {
             font-weight: bold;
             color: black;
         }
 
         .profile-popup .wallet-addresses {
-            margin-bottom: 0.5rem; /* Reduced margin */
-            border: 1px solid #ddd; /* Light border */
+            margin-bottom: 0.5rem;
+            /* Reduced margin */
+            border: 1px solid #ddd;
+            /* Light border */
             padding: 0.5rem;
-            background: #fff; /* White background for contrast */
+            background: #fff;
+            /* White background for contrast */
             border-radius: 5px;
         }
-       .profile-popup .wallet-addresses div{
+
+        .profile-popup .wallet-addresses div {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .profile-popup .wallet-addresses p {
-            word-break: break-all; /* Prevent overflow */
+            word-break: break-all;
+            /* Prevent overflow */
             margin-right: 0.5rem;
             margin-bottom: 0;
         }
 
         .profile-popup .wallet-addresses button {
-            background: #ddd;  /* Lighter gray button */
+            background: #ddd;
+            /* Lighter gray button */
             border: none;
             padding: 0.3rem 0.5rem;
             cursor: pointer;
             font-size: 0.8rem;
             border-radius: 3px;
-            transition: background-color 0.2s; /* Smooth hover effect */
+            transition: background-color 0.2s;
+            /* Smooth hover effect */
             height: fit-content;
         }
 
         .profile-popup .wallet-addresses button:hover {
-            background-color: #ccc; /* Darker gray on hover */
+            background-color: #ccc;
+            /* Darker gray on hover */
         }
+
         .profile-popup .wallet-addresses img {
-            width: 20px; /* Adjust size as needed */
+            width: 20px;
+            /* Adjust size as needed */
             height: 20px;
             margin-right: 5px;
             vertical-align: middle;
@@ -250,21 +303,29 @@
 
         .profile-popup .close-button {
             position: absolute;
-            top: 0.3rem; /* Increased top distance */
-            right: 0.3rem; /* Increased right distance */
+            top: 0.3rem;
+            /* Increased top distance */
+            right: 0.3rem;
+            /* Increased right distance */
             cursor: pointer;
-            font-size: 1.2rem; /* Increased size */
-            color: #777; /* Gray color */
-            transition: color 0.2s; /* Smooth hover effect */
+            font-size: 1.2rem;
+            /* Increased size */
+            color: #777;
+            /* Gray color */
+            transition: color 0.2s;
+            /* Smooth hover effect */
         }
+
         .profile-popup .copy-icon {
-            width: 20px; /* Adjust size as needed */
+            width: 20px;
+            /* Adjust size as needed */
             height: 20px;
             vertical-align: middle;
         }
 
         .profile-popup .close-button:hover {
-            color: #333; /* Darker gray on hover */
+            color: #333;
+            /* Darker gray on hover */
         }
 
         /* Overlay to dim the background */
@@ -274,31 +335,39 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6); /* Slightly darker overlay */
-            z-index: 999;
-            display: none; /* Hidden by default */
+            background: rgba(0, 0, 0, 0.6);
+            /* Slightly darker overlay */
+            z-index: 1000;
+            display: none;
+            /* Hidden by default */
         }
 
         /* Receive Popup Styles */
         .receive-popup {
-            position: fixed; /* Centered on screen */
+            position: fixed;
+            /* Centered on screen */
             top: 50%;
             left: 50%;
             transform: translateX(-50%) translateY(-50%);
-            background: #222; /* Dark background */
+            background: #222;
+            /* Dark background */
             color: #fff;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-            z-index: 1001; /* Above everything */
-            display: none; /* Hidden by default */
-            width: 400px; /* Adjust as needed */
+            z-index: 1001;
+            /* Above everything */
+            display: none;
+            /* Hidden by default */
+            width: 400px;
+            /* Adjust as needed */
         }
 
         .receive-popup .step {
             margin-bottom: 20px;
             position: relative;
-            padding-left: 30px; /* Space for the step number */
+            padding-left: 30px;
+            /* Space for the step number */
         }
 
         .receive-popup .step:before {
@@ -330,8 +399,10 @@
             border: 1px solid #444;
             background: #333;
             color: #fff;
-            appearance: none;  /* Remove default arrow */
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fff'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"); /* Custom arrow */
+            appearance: none;
+            /* Remove default arrow */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fff'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+            /* Custom arrow */
             background-repeat: no-repeat;
             background-position: right 10px center;
             background-size: 1em;
@@ -339,7 +410,8 @@
         }
 
         .receive-popup select::-ms-expand {
-            display: none; /* For IE 11 */
+            display: none;
+            /* For IE 11 */
         }
 
         .receive-popup .address-section {
@@ -352,7 +424,8 @@
         .receive-popup .qr-code {
             width: 120px;
             height: 120px;
-            background: #fff; /* Placeholder */
+            background: #fff;
+            /* Placeholder */
             margin: 0 auto 10px;
         }
 
@@ -366,23 +439,32 @@
             font-size: 0.7em;
             color: #999;
         }
-        .receive-popup .copy-button{
-            background: #ddd;  /* Lighter gray button */
+
+        .receive-popup .copy-button {
+            background: #ddd;
+            /* Lighter gray button */
             border: none;
             padding: 0.4rem 0.7rem;
             cursor: pointer;
             font-size: 0.9rem;
             border-radius: 3px;
-            transition: background-color 0.2s; /* Smooth hover effect */
+            transition: background-color 0.2s;
+            /* Smooth hover effect */
         }
+
         .receive-popup .close-button {
             position: absolute;
-            top: 0.3rem; /* Increased top distance */
-            right: 0.3rem; /* Increased right distance */
+            top: 0.3rem;
+            /* Increased top distance */
+            right: 0.3rem;
+            /* Increased right distance */
             cursor: pointer;
-            font-size: 1.2rem; /* Increased size */
-            color: #777; /* Gray color */
-            transition: color 0.2s; /* Smooth hover effect */
+            font-size: 1.2rem;
+            /* Increased size */
+            color: #777;
+            /* Gray color */
+            transition: color 0.2s;
+            /* Smooth hover effect */
         }
 
         /* Overlay to dim the background */
@@ -392,141 +474,167 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6); /* Slightly darker overlay */
+            background: rgba(0, 0, 0, 0.6);
+            /* Slightly darker overlay */
             z-index: 1000;
-            display: none; /* Hidden by default */
+            display: none;
+            /* Hidden by default */
         }
+
         .send-popup {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: white;
-        padding: 20px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        border-radius: 10px;
-        width: 300px;
-        z-index: 1000;
-    }
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            width: 300px;
+            z-index: 1000;
+        }
 
-    .close-button {
-        float: right;
-        cursor: pointer;
-        font-size: 20px;
-    }
+        .close-button {
+            float: right;
+            cursor: pointer;
+            font-size: 20px;
+        }
 
-    input, select {
-        width: 100%;
-        padding: 10px;
-        margin: 10px 0;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-    }
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
 
-    .send-button {
-        width: 100%;
-        padding: 10px;
-        background: blueviolet;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
+        .send-button {
+            width: 100%;
+            padding: 10px;
+            background: blueviolet;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-    .action-btn {
-        display: flex;
-        align-items: center;
-        background: blueviolet;
-        color: rgb(255, 255, 255);
-        border: none;
-        padding: 10px 15px;
-        border-radius: 5px;
-        cursor: pointer;
-        gap: 8px;
-    }
+        .action-btn {
+            display: flex;
+            align-items: center;
+            background: blueviolet;
+            color: rgb(255, 255, 255);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            gap: 8px;
+        }
 
-    .action-btn svg {
-        width: 20px;
-        height: 20px;
-    }
-    /* Hide assets card if no assets */
+        .action-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Hide assets card if no assets */
         .hidden {
             display: none;
         }
+
         /* Remove unnecessary styles */
-        .navbar, .nav-links, .auth-buttons, .profile-image {
+        .navbar,
+        .nav-links,
+        .auth-buttons,
+        .profile-image {
             display: none;
         }
     </style>
 </head>
+
 <body>
-      <!-- Modified Header Section -->
+    <!-- Modified Header Section -->
     <div class="header">
         <a href="{{ url_for('home') }}" class="back-button">
-            ← <!-- HTML entity for a left arrow -->
+            ←
+            <!-- HTML entity for a left arrow -->
         </a>
     </div>
 
     <div class="main-container">
-        <div class="balance-card">
-            <div class="balance-label">Total Balance</div>
-            <div class="balance-amount">${{ total_balance | round(2) }}</div>
-            <div class="action-buttons">
-                <button class="action-btn" onclick="window.location.href='{{ url_for('send') }}'">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
-                    </svg>
-                    Send
-                </button>
-                <button class="action-btn" onclick="window.location.href='{{ url_for('receive') }}'">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" transform="rotate(180 12 12)"/>
-                    </svg>
-                    Receive
-                </button>
-                <button class="action-btn"  onclick="window.location.href='{{ url_for('swap') }}'">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M7 16V4M7 4L3 8M7 4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/>
-                    </svg>
-                    Swap
-                </button>
-                <!-- Buy Button in dashboard.html -->
-                <button class="action-btn" onclick="window.location.href='{{ url_for('buycrypto') }}'">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M3 3h18v18H3zM12 8v8M8 12h8"/>
-                    </svg>
-                    Buy
-                </button>
+        <div class="balance-and-assets">
+            <div class="balance-card">
+                <div class="balance-label">Total Balance</div>
+                <div class="balance-amount">${{ total_balance | round(2) }}</div>
+                <div class="action-buttons">
+                    <button class="action-btn" onclick="window.location.href='{{ url_for('send') }}'">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
+                        </svg>
+                        Send
+                    </button>
+                    <button class="action-btn" onclick="window.location.href='{{ url_for('receive') }}'">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" transform="rotate(180 12 12)" />
+                        </svg>
+                        Receive
+                    </button>
+                    <button class="action-btn" onclick="window.location.href='{{ url_for('swap') }}'">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 16V4M7 4L3 8M7 4l4 4M17 8v12m0 0l4-4m-4 4l-4-4" />
+                        </svg>
+                        Swap
+                    </button>
+                    <!-- Buy Button in dashboard.html -->
+                    <button class="action-btn" onclick="window.location.href='{{ url_for('buycrypto') }}'">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 3h18v18H3zM12 8v8M8 12h8" />
+                        </svg>
+                        Buy
+                    </button>
+                </div>
             </div>
-        </div>
 
-        <!-- Assets Card - Conditionally Hidden -->
-        {% if total_balance > 0 %}
+            <!-- Assets Card - Conditionally Hidden -->
+            {% if total_balance > 0 %}
             <div class="assets-card">
                 <div class="card-title">Assets</div>
 
                 {% for asset in assets %}
-                    <div class="asset-item">
-                        <div class="asset-info">
-                            <div class="asset-icon">
-                                <img src="{{ asset.logo_url }}" alt="{{ asset.name }} Logo">
-                            </div>
-                            <div class="asset-details">
-                                <h3>{{ asset.name }}</h3>
-                                <div class="asset-amount">{{ asset.quantity }} {{ asset.symbol }}</div>
-                            </div>
+                <div class="asset-item">
+                    <div class="asset-info">
+                        <div class="asset-icon">
+                            <img src="{{ asset.logo_url }}" alt="{{ asset.name }} Logo">
                         </div>
-                        <div class="asset-value">
-                            <div id="{{ asset.symbol }}-price">$0.00</div> <!-- Placeholder, will be populated by JavaScript -->
-                            <div class="value-change" id="{{ asset.symbol }}-change"></div>
+                        <div class="asset-details">
+                            <h3>{{ asset.name }}</h3>
+                            <div class="asset-amount">{{ asset.quantity }} {{ asset.symbol }}</div>
                         </div>
                     </div>
+                    <div class="asset-value">
+                        <div id="{{ asset.symbol }}-price">$0.00</div>
+                        <!-- Placeholder, will be populated by JavaScript -->
+                        <div class="value-change" id="{{ asset.symbol }}-change"></div>
+                    </div>
+                </div>
                 {% endfor %}
             </div>
-        {% else %}
+            {% else %}
             <p>No assets held.</p>
-        {% endif %}
+            {% endif %}
+        </div>
+        <div class="transactions">
+            <h2>Transaction History</h2>
+            {% if transactions %}
+                {% for transaction in transactions %}
+                    <div class="transaction-item">
+                        {{ transaction.description }} - {{ transaction.date }}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No transactions yet.</p>
+            {% endif %}
+        </div>
     </div>
 
     <!-- Receive Popup -->
@@ -550,7 +658,7 @@
                 <option>Ethereum (ERC20)</option>
                 <option>Bitcoin Network</option>
             </select>
-            <div>Contract address ending in jLj6t ></div>
+            <div>Contract address ending in jLj6t></div>
         </div>
 
         <div class="step" data-step="3">
@@ -560,7 +668,7 @@
                     <!-- QR Code Image Here (Dynamically Generated) -->
                 </div>
                 <div class="address">TMRyjGtTjUmbegr1kPtoYXZZVp3Rtr2U97</div>
-                 <button class="copy-button" onclick="copyAddress()">Copy</button>
+                <button class="copy-button" onclick="copyAddress()">Copy</button>
                 <div class="min-deposit">Minimum deposit More than 0.01 USDT</div>
             </div>
         </div>
@@ -594,52 +702,45 @@
 
     <!-- Overlay -->
     <div class="overlay" id="overlay"></div>
-       <!-- Profile Popup -->
-         {% if session['username'] %}
-         <div class="profile-popup" id="profilePopup">
-           <span class="close-button" onclick="toggleProfilePopup()">×</span>
-           <h2>Profile Details</h2>
-           <p><strong>Name:</strong> {{ firstname }} {{ lastname }}</p>
-           <p><strong>Username:</strong> {{ session['username'] }}</p>
-           <p><strong>Email:</strong> {{ email }}</p>
+    <!-- Profile Popup -->
+    {% if session['username'] %}
+    <div class="profile-popup" id="profilePopup">
+        <span class="close-button" onclick="toggleProfilePopup()">×</span>
+        <h2>Profile Details</h2>
+        <p><strong>Name:</strong> {{ firstname }} {{ lastname }}</p>
+        <p><strong>Username:</strong> {{ session['username'] }}</p>
+        <p><strong>Email:</strong> {{ email }}</p>
 
-           <h3>Wallet Addresses</h3>
-           <div class="wallet-addresses">
-             <div>
-               <p>
-                 <img
-                   src="https://cdn-icons-png.flaticon.com/128/535/535219.png"
-                   alt="BTC Icon"
-                 />
-                 BTC: [BTC address placeholder]
-               </p>
-               <button onclick="copyAddress('btc_address')">Copy</button>
-             </div>
-             <div>
-               <p>
-                 <img
-                   src="https://upload.wikimedia.org/wikipedia/en/thumb/9/94/Usdt_logo.svg/480px-Usdt_logo.svg.png"
-                   alt="USDT Icon"
-                 />
-                 USDT: [USDT address placeholder]
-               </p>
-               <button onclick="copyAddress('usdt_address')">Copy</button>
-             </div>
-             <div>
-               <p>
-                 <img
-                   src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Ethereum_logo_2014.svg/1200px-Ethereum_logo_2014.svg.png"
-                   alt="ETH Icon"
-                 />
-                 ETH: [ETH address placeholder]
-               </p>
-               <button onclick="copyAddress('eth_address')">Copy</button>
-             </div>
-           </div>
-         </div>
-         {% endif %}
+        <h3>Wallet Addresses</h3>
+        <div class="wallet-addresses">
+            <div>
+                <p>
+                    <img src="https://cdn-icons-png.flaticon.com/128/535/535219.png" alt="BTC Icon" />
+                    BTC: [BTC address placeholder]
+                </p>
+                <button onclick="copyAddress('btc_address')">Copy</button>
+            </div>
+            <div>
+                <p>
+                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/9/94/Usdt_logo.svg/480px-Usdt_logo.svg.png"
+                        alt="USDT Icon" />
+                    USDT: [USDT address placeholder]
+                </p>
+                <button onclick="copyAddress('usdt_address')">Copy</button>
+            </div>
+            <div>
+                <p>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Ethereum_logo_2014.svg/1200px-Ethereum_logo_2014.svg.png"
+                        alt="ETH Icon" />
+                    ETH: [ETH address placeholder]
+                </p>
+                <button onclick="copyAddress('eth_address')">Copy</button>
+            </div>
+        </div>
+    </div>
+    {% endif %}
     <script>
-         function copyAddress(addressId) {
+        function copyAddress(addressId) {
             // Find the <p> element containing the address
             const addressElement = document.querySelector(`.wallet-addresses:has(p > img[alt="BTC Icon"]), .wallet-addresses:has(p > img[alt="USDT Icon"]), .wallet-addresses:has(p > img[alt="ETH Icon"])`); // added has() selector for better accuracy and prevent incorrect copy from other sections
             if (addressElement) {
@@ -660,17 +761,19 @@
                 alert('Address not found!');
             }
         }
-         function toggleProfilePopup() {
+
+        function toggleProfilePopup() {
             const popup = document.getElementById('profilePopup');
             popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
         }
+
         function updateCoinPrices() {
             {% for asset in assets %}
             // Fetch {{ asset.symbol }} price
-            fetch('https://api.coingecko.com/api/v3/simple/price?ids={{ asset.coingecko_id }}&vs_currencies=usd')  // Replace with a reliable API. Use coingecko IDs
+            fetch('https://api.coingecko.com/api/v3/simple/price?ids={{ asset.coingecko_id }}&vs_currencies=usd')
                 .then(response => response.json())
                 .then(data => {
-                    const assetPrice = data['{{ asset.coingecko_id }}'].usd; // Make sure that the API response structure aligns with this
+                    const assetPrice = data['{{ asset.coingecko_id }}'].usd;
                     document.getElementById('{{ asset.symbol }}-price').textContent = '$' + assetPrice.toFixed(2);
                 })
                 .catch(error => console.error('Error fetching {{ asset.symbol }} price:', error));
@@ -692,30 +795,55 @@
             document.getElementById('receivePopup').style.display = 'none';
             document.getElementById('overlay').style.display = 'none';
         }
+
         function openSendPopup() {
-        document.getElementById("sendPopup").style.display = "block";
-    }
-
-    function closeSendPopup() {
-        document.getElementById("sendPopup").style.display = "none";
-    }
-
-    function sendCrypto() {
-        const coin = document.getElementById("sendSelectCoin").value;
-        const amount = document.getElementById("sendAmount").value;
-        const address = document.getElementById("receiverAddress").value;
-
-        if (!amount || !address) {
-            alert("Please enter all details.");
-            return;
+            document.getElementById("sendPopup").style.display = "block";
         }
 
-        alert(`Sending ${amount} ${coin} to ${address}`);
-        closeSendPopup();
-    }
-    function redirectToBuy() {
-        window.location.href = "buycrypto.html";
-    }
+        function closeSendPopup() {
+            document.getElementById("sendPopup").style.display = "none";
+        }
+
+        function sendCrypto() {
+            const coin = document.getElementById("sendSelectCoin").value;
+            const amount = document.getElementById("sendAmount").value;
+            const address = document.getElementById("receiverAddress").value;
+
+            if (!amount || !address) {
+                alert("Please enter all details.");
+                return;
+            }
+
+            alert(`Sending ${amount} ${coin} to ${address}`);
+
+            // Simulating adding a transaction to the history (replace with actual logic)
+            addTransaction(`Sent ${amount} ${coin} to ${address}`);
+
+            closeSendPopup();
+        }
+
+        function redirectToBuy() {
+            window.location.href = "buycrypto.html";
+        }
+
+        // JavaScript functions to handle transaction history
+        function addTransaction(transactionDescription) {
+            const transactionsContainer = document.querySelector('.transactions');
+            const newTransaction = document.createElement('div');
+            newTransaction.classList.add('transaction-item');
+            newTransaction.textContent = `${transactionDescription} - ${getCurrentDate()}`;
+            transactionsContainer.prepend(newTransaction); // Add to the top of the list
+
+        }
+
+        function getCurrentDate() {
+            const now = new Date();
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = String(now.getMonth() + 1).padStart(2, '0'); // January is 0!
+            const year = now.getFullYear();
+            return `${year}-${month}-${day}`;
+        }
     </script>
 </body>
+
 </html>

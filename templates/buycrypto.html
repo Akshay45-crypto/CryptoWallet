@@ -11,7 +11,7 @@
 
 body {
   font-family: sans-serif;
-  background-color: black;
+  background-color: #121212; /* Dark Grayish Purple */
   color: white;
   margin: 0;
   padding: 0;
@@ -28,22 +28,24 @@ body {
 }
 
 .content {
-  background-color: #1a1a1a; /* Equivalent to zinc-900 */
+  background-color: #1e1e1e; /* Slightly Lighter Grayish Purple */
   padding: 20px;
   border-radius: 8px;
-  border: 1px solid #262626; /* Equivalent to zinc-800 */
+  border: 1px solid #444; /* Darker Grayish Purple */
   box-sizing: border-box;
 }
 
 h1 {
-  font-size: 1.75rem;  /* Adjusted for better HTML/CSS scaling */
+  font-size: 1.75rem;
   font-weight: bold;
   margin-bottom: 1rem;
+  color: #f4f4f4; /* Light Gray */
 }
 
 label {
   display: block;
   margin-bottom: 0.5rem;
+  color: #bbb; /* Light Gray */
 }
 
 select,
@@ -52,9 +54,9 @@ input {
   padding: 0.75rem;
   margin-bottom: 1rem;
   border-radius: 0.5rem;
-  background-color: black;
+  background-color: #262626; /* Medium Dark Grayish Purple */
   color: white;
-  border: 1px solid #262626;
+  border: 1px solid #444; /* Darker Grayish Purple */
   box-sizing: border-box;
   outline: none;
 }
@@ -79,14 +81,15 @@ select {
   transform: translateY(-50%);
   width: 1.5rem;
   height: 1.5rem;
+  display: none;
 }
 
 .crypto-info {
   padding: 1rem;
   margin-bottom: 1rem;
   border-radius: 0.5rem;
-  background-color: black;
-  border: 1px solid #262626;
+  background-color: #262626; /* Medium Dark Grayish Purple */
+  border: 1px solid #444; /* Darker Grayish Purple */
   display: flex;
   gap: 0.75rem;
   align-items: center;
@@ -95,17 +98,19 @@ select {
 .crypto-info svg {
   width: 2rem;
   height: 2rem;
+  display: none;
 }
 
 .crypto-info h2 {
   font-size: 1.125rem;
   font-weight: bold;
   margin: 0;
+  color: #f4f4f4; /* Light Gray */
 }
 
 .crypto-info p {
   font-size: 0.875rem;
-  color: #a3a3a3; /* Equivalent to zinc-400 */
+  color: #a3a3a3; /* Light Grayish Purple */
   margin: 0;
 }
 
@@ -113,8 +118,8 @@ select {
   padding: 1rem;
   margin-bottom: 1rem;
   border-radius: 0.5rem;
-  background-color: black;
-  border: 1px solid #262626;
+  background-color: #262626; /* Medium Dark Grayish Purple */
+  border: 1px solid #444; /* Darker Grayish Purple */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -129,18 +134,20 @@ select {
 .total-cost-label svg {
   width: 1.5rem;
   height: 1.5rem;
+  display: none;
 }
 
 .total-cost span {
   font-weight: bold;
+  color: #f4f4f4; /* Light Gray */
 }
 
 button {
   width: 100%;
   padding: 0.75rem;
   border-radius: 0.5rem;
-  background-color: white;
-  color: black;
+  background: linear-gradient(135deg, #6a5acd, #4b0082); /* Gradient Purple */
+  color: white;
   font-weight: bold;
   display: flex;
   align-items: center;
@@ -153,8 +160,7 @@ button {
 }
 
 button:hover {
-  background-color: #404040;  /* Approximate zinc-200 hover */
-  color: white;
+  background: linear-gradient(135deg, #4b0082, #6a5acd); /* Gradient Purple (reversed) */
 }
 
 button:disabled {
@@ -182,11 +188,11 @@ input[type="password"] {
   width: 4rem;
   height: 4rem;
   margin: 0 auto 1rem;
-  display: block;
+  display: none;
 }
 
 .success-message p {
-  color: #a3a3a3; /* Equivalent to zinc-400 */
+  color: #a3a3a3; /* Light Grayish Purple */
 }
 
 svg {
@@ -206,6 +212,21 @@ svg {
             margin-bottom: 0.5rem;
             font-size: 0.875rem;
         }
+
+/*  ADDED STYLES TO REMOVE RADIO BUTTON INDICATORS */
+
+/* Option 1:  Hide elements based on context (less specific, might affect other elements) */
+.select-icon::before,
+.total-cost-label::before {
+    content: none !important; /* Ensure it overrides any existing content */
+    display: none !important;
+}
+
+/* Option 2:  If the dots are actually specific SVG or image elements (more robust) */
+.select-icon svg.radio-indicator, /*  Replace "radio-indicator" with the actual class */
+.total-cost-label svg.radio-indicator { /*  Replace "radio-indicator" with the actual class */
+    display: none !important;
+}
 
   </style>
 </head>

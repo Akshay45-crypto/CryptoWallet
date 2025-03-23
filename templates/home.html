@@ -279,6 +279,24 @@
             color: #f4f4f4;
         }
 
+                /* Professional Name/Username/Email Display */
+        .profile-info-grid {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .profile-label {
+            font-weight: bold;
+            color: #f4f4f4; /* Lighter Gray */
+            text-align: right; /* Right align labels */
+        }
+
+        .profile-value {
+            color: #bbb; /* Light Gray */
+        }
+
         .profile-popup .wallet-address {
             margin-bottom: 1.5rem;
             border: 1px solid #333; /* Dark border */
@@ -452,6 +470,27 @@
             clear: both;
             display: table;
         }
+
+        /* About Button Styling */
+        .about-button {
+            padding: 0.75rem 2rem; /* Adjusted padding */
+            font-size: 1rem;
+            background: linear-gradient(135deg, #6a5acd, #4b0082); /* Matched register button gradient */
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            font-weight: bold;
+            transition: background 0.3s ease;
+            display: block; /* Make it a block-level element */
+            width: fit-content; /* Make the width fit its content */
+            margin: 2rem auto; /* Center the button horizontally and add some top margin */
+        }
+
+        .about-button:hover {
+            background: linear-gradient(135deg, #4b0082, #6a5acd); /* Inverted gradient on hover */
+        }
     </style>
 </head>
 
@@ -462,7 +501,6 @@
         </div>
         <!-- In your nav-links section -->
         <div class="nav-links">
-            <a href="{{ url_for('about') }}">About</a>  <!-- Updated this line -->
             {% if isLoggedIn %}
             <a href="{{ url_for('dashboard') }}">Dashboard</a>
             {% endif %}
@@ -488,6 +526,8 @@
             <!-- Change from the btn-login class button to another link to connect to the page -->
             <button class="cta-button" onclick="window.location.href='{{ url_for('register') }}'">Create Account</button>
         {% endif %}
+        <!-- About Button -->
+        <button class="about-button" onclick="window.location.href='{{ url_for('about') }}'">About</button>
     </div>
 
 
@@ -520,9 +560,18 @@
     <div class="profile-popup" id="profilePopup">
         <span class="close-button" onclick="closeProfilePopup()">×</span>
         <h2>Profile Details</h2>
-        <p><strong>Name:</strong> {{ firstname }} {{ lastname }}</p>
-        <p><strong>Username:</strong> {{ username }}</p>
-        <p><strong>Email:</strong> {{ email }}</p>
+
+        <div class="profile-info-grid">
+            <div class="profile-label">Name:</div>
+            <div class="profile-value">{{ firstname }} {{ lastname }}</div>
+
+            <div class="profile-label">Username:</div>
+            <div class="profile-value">{{ username }}</div>
+
+            <div class="profile-label">Email:</div>
+            <div class="profile-value">{{ email }}</div>
+        </div>
+
 
         <!-- Coin Tabs -->
         <div class="coin-tabs">
