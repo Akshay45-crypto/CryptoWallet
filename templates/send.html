@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Crypto</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        /* General Page Styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #121212;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: #1e1e1e;
+            padding: 25px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            width: 400px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #f4f4f4;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #bbb;
+            font-size: 14px;
+            text-align: left;
+        }
+
+        /* Custom Select Dropdown */
+        .custom-select {
+            display: flex;
+            align-items: center;
+            background: #262626;
+            border-radius: 8px;
+            padding: 12px;
+            cursor: pointer;
+            border: 1px solid #333;
+            transition: 0.3s ease;
+            position: relative;
+        }
+
+        .custom-select:hover {
+            border-color: #6a5acd;
+        }
+
+        .custom-select img {
+            width: 28px;
+            height: 28px;
+            margin-right: 12px;
+        }
+
+        select {
+            flex: 1;
+            border: none;
+            background: none;
+            font-size: 16px;
+            color: #fff;
+            cursor: pointer;
+            outline: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        /* Fix for select dropdown */
+        select option {
+            background: #1e1e1e;
+            /* Match container background */
+            color: #fff;
+            font-size: 16px;
+        }
+
+        input {
+            width: calc(100% - 24px);
+            /* Fix width to align properly */
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #444;
+            border-radius: 8px;
+            background: #262626;
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s ease;
+            box-sizing: border-box;
+            /* Ensures padding doesn’t affect width */
+        }
+
+
+        input:focus {
+            border-color: #6a5acd;
+        }
+
+        .send-button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #6a5acd, #4b0082);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .send-button:hover {
+            background: linear-gradient(135deg, #4b0082, #6a5acd);
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #6a5acd;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Validation Message Styling */
+        .validation-message {
+            color: #e74c3c;
+            /* Red color */
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+            /* Hidden by default */
+        }
+
+        .validation-message.active {
+            display: block;
+            /* Show if active */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Send Crypto</h2>
+
+        <label for="sendSelectCoin">Select Coin:</label>
+        <div class="custom-select">
+            <img id="selectedIcon" src="https://assets.coingecko.com/coins/images/325/small/Tether-logo.png" alt="Coin Icon">
+            <select id="sendSelectCoin" onchange="updateIcon(); validateAmount(); validateAddress()">
+                <option value="USDT" data-icon="https://assets.coingecko.com/coins/images/325/small/Tether-logo.png" data-min="1">USDT</option>
+                <option value="Bitcoin" data-icon="https://assets.coingecko.com/coins/images/1/small/bitcoin.png" data-min="0.001">Bitcoin</option>
+                <option value="Ethereum" data-icon="https://assets.coingecko.com/coins/images/279/small/ethereum.png" data-min="0.01">Ethereum</option>
+                <option value="Dogecoin" data-icon="https://assets.coingecko.com/coins/images/5/small/dogecoin.png" data-min="0">Dogecoin</option>
+            </select>
+        </div>
+
+        <label for="sendAmount">Enter Amount:</label>
+        <input type="number" id="sendAmount" placeholder="Enter amount" min="0.01" oninput="validateAmount()">
+        <div id="amountValidationMessage" class="validation-message"></div>
+
+        <label for="receiverAddress">Receiver’s Wallet Address:</label>
+        <input type="text" id="receiverAddress" placeholder="Enter wallet address" oninput="validateAddress()">
+        <div id="addressValidationMessage" class="validation-message"></div>
+
+        <button class="send-button" onclick="sendCrypto()">Send</button>
+
+        <a href="{{ url_for('home') }}" class="back-link">Back to Wallet</a>
+    </div>
+
+    <script>
+        function updateIcon() {
+            let select = document.getElementById("sendSelectCoin");
+            let selectedOption = select.options[select.selectedIndex];
+            let icon = selectedOption.getAttribute("data-icon");
+            document.getElementById("selectedIcon").src = icon;
+            validateAmount(); // Also validate amount when coin changes
+            validateAddress(); // Validate address whenever coin is changed
+        }
+
+        function validateAmount() {
+            let select = document.getElementById("sendSelectCoin");
+            let selectedOption = select.options[select.selectedIndex];
+            let minAmount = parseFloat(selectedOption.getAttribute("data-min"));
+            let coin = selectedOption.value; // get selected coin's value
+            let amount = parseFloat(document.getElementById("sendAmount").value);
+
+            let amountValidationMessage = document.getElementById("amountValidationMessage");
+
+            if (isNaN(amount) || amount < minAmount) {
+                amountValidationMessage.textContent = `Minimum amount for ${coin} is ${minAmount}.`;
+                amountValidationMessage.classList.add("active");
+            } else {
+                amountValidationMessage.textContent = "";
+                amountValidationMessage.classList.remove("active");
+            }
+        }
+
+        function validateAddress() {
+            let select = document.getElementById("sendSelectCoin");
+            let selectedOption = select.options[select.selectedIndex];
+            let coin = selectedOption.value;
+            let address = document.getElementById("receiverAddress").value;
+            let addressValidationMessage = document.getElementById("addressValidationMessage");
+            let isValid = false; // initially set to false
+
+            // Address validation logic based on the selected coin
+            if (coin === "Bitcoin") {
+                // isValid = isValidBitcoinAddress(address);  // Remove default btc validation
+                isValid = isValidRawBitcoinAddress(address)  // Implements your address type validation
+            } else if (coin === "Ethereum") {
+                isValid = isValidEthereumAddress(address);
+            } else if (coin === "USDT") {
+                isValid = isValidTronAddress(address) || isValidEthereumAddress(address); //Assuming USDT TRC20 Address is valid Tron
+            } else if (coin === "Dogecoin") {
+                isValid = isValidDogecoinAddress(address);
+            }
+
+            if (!isValid) {
+                addressValidationMessage.textContent = `Please enter a valid ${coin} address.`;
+                addressValidationMessage.classList.add("active");
+            } else {
+                addressValidationMessage.textContent = "";
+                addressValidationMessage.classList.remove("active");
+            }
+        }
+
+        function sendCrypto() {
+            const coin = document.getElementById("sendSelectCoin").value;
+            const amount = parseFloat(document.getElementById("sendAmount").value);
+            const address = document.getElementById("receiverAddress").value;
+
+            let amountValidationMessage = document.getElementById("amountValidationMessage");
+            let addressValidationMessage = document.getElementById("addressValidationMessage");
+            let select = document.getElementById("sendSelectCoin");
+            let selectedOption = select.options[select.selectedIndex];
+            let minAmount = parseFloat(selectedOption.getAttribute("data-min"));
+            let coinType = selectedOption.value;
+
+            if (!amount || !address) {
+                alert("Please enter all details.");
+                return;
+            }
+            if (addressValidationMessage.classList.contains("active")) {
+                alert("Please enter a valid wallet address.");
+                return;
+            }
+            if (amountValidationMessage.classList.contains("active")) {
+                alert(`Please enter an amount greater than or equal to the minimum amount which is ${minAmount} for ${coinType}.`);
+                return;
+            }
+            alert(`Sending ${amount} ${coin} to ${address}`);
+        }
+
+        // Implement functions to validate different types of addresses
+        function isValidBitcoinAddress(address) {
+            // Basic Bitcoin address validation using regular expression
+            return /^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$/.test(address);
+        }
+
+        function isValidEthereumAddress(address) {
+            // Basic Ethereum address validation using regular expression
+            return /^0x[a-fA-F0-9]{40}$/.test(address);
+        }
+
+        function isValidTronAddress(address) {
+            // Basic Tron address validation using regular expression
+            return /^T[A-Za-z1-9]{33}$/.test(address);
+        }
+
+        function isValidDogecoinAddress(address) {
+            // Basic Dogecoin address validation using regular expression
+            return /^D[A-Za-z0-9]{33}$/.test(address);
+        }
+
+        function isValidBitcoinAddress(address) {
+            // Basic Bitcoin address validation using regular expression
+            return /^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$/.test(address);
+        }
+function isValidRawBitcoinAddress(address) {
+        return false
+}
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>testWALLET</title>
+    <style>
+        /* Existing styles - Keep these */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f5f5;
+            /* Changed to a light gray */
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between; /* Distribute elements horizontally */
+            align-items: center; /* Align vertically */
+            padding: 1.5rem 2rem;
+            background: rgb(0, 0, 0);
+            border-bottom: 1px solid #eaeaea;
+            color: white;
+        }
+
+        .logo {
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: white;
+        }
+
+        /* Styles for wallet address display */
+        .wallet-info {
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .wallet-label {
+            font-size: 0.8rem;
+            color: #ccc;
+        }
+
+        .wallet-address {
+            font-size: 0.9rem;
+            word-break: break-all;
+            margin-bottom: 0.2rem;
+        }
+
+        .copy-button {
+            background: #ddd;
+            /* Lighter gray button */
+            border: none;
+            padding: 0.3rem 0.5rem;
+            cursor: pointer;
+            font-size: 0.8rem;
+            border-radius: 3px;
+            transition: background-color 0.2s;
+            /* Smooth hover effect */
+        }
+
+        .copy-button:hover {
+            background-color: #ccc;
+            /* Darker gray on hover */
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center; /* Vertically center the items */
+        }
+
+        .auth-buttons button {
+            padding: 0.5rem 1.5rem;
+            border: none;
+            border-radius: 2px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+
+        .login {
+            background: transparent;
+            color: #ffffff;
+            border: 1px solid #ffffff;
+        }
+
+        .register {
+            background: #ffffff;
+            color: #000000;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 8rem 2rem;
+            background: #ffffff;
+            color: #000000;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+            letter-spacing: -0.5px;
+        }
+
+        .hero p {
+            margin-bottom: 3rem;
+            color: #666666;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            padding: 1rem 3rem;
+            font-size: 1rem;
+            background: #000000;
+            color: #ffffff;
+            border: none;
+            border-radius: 2px;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+        }
+
+        .features {
+            padding: 6rem 2rem;
+            text-align: center;
+            background: #f8f8f8;
+        }
+
+        .features h2 {
+            margin-bottom: 3rem;
+            font-size: 1.8rem;
+            font-weight: 500;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            padding: 2rem;
+            background: #ffffff;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .feature-card p {
+            color: #666666;
+            line-height: 1.6;
+        }
+
+        .btn-login {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1.5rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* Profile image style */
+        .profile-image {
+            width: 40px;
+            /* Adjust size as needed - bigger */
+            height: 40px;
+            border-radius: 50%;
+            /* Make it round */
+            background-color: #ccc;
+            /* Placeholder background */
+            display: inline-block;
+            margin-left: 10px;
+            overflow: hidden;
+            /* Ensure image stays within bounds */
+            cursor: pointer;
+            /* Make it look clickable */
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Popup Styles */
+        .profile-popup {
+            position: fixed; /* Stay in place */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Center the box */
+            background: #f2f2f2;  /* Light gray background */
+            padding: 2rem;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); /* Stronger shadow */
+            z-index: 1000; /* Ensure it's on top of everything */
+            display: none; /* Hidden by default */
+            width: 500px; /* Increased width for coin images */
+            border-radius: 5px; /* Rounded corners */
+        }
+
+        .profile-popup h2 {
+            margin-bottom: 1.5rem; /* Increased margin */
+            font-size: 1.5rem;
+            color: #333; /* Darker text */
+            border-bottom: 1px solid #ddd; /* Add a subtle divider */
+            padding-bottom: 0.5rem;
+        }
+
+        .profile-popup p {
+            margin-bottom: 0.7rem; /* Increased margin */
+            color: #555;
+        }
+
+        .profile-popup .wallet-address {
+            margin-bottom: 1.5rem; /* Increased margin */
+            border: 1px solid #ddd; /* Light border */
+            padding: 0.7rem;
+            word-break: break-all; /* Prevent overflow */
+            background: #fff; /* White background for contrast */
+            border-radius: 3px;
+            display: flex; /* Added */
+            justify-content: space-between; /* Added */
+            align-items: center; /* Added */
+        }
+
+        .profile-popup .wallet-address p {
+            margin: 0;  /* Reset paragraph margins */
+            flex: 1; /* Take up available space */
+        }
+
+        .profile-popup .wallet-address button {
+            background: #ddd;  /* Lighter gray button */
+            border: none;
+            padding: 0.4rem 0.7rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            border-radius: 3px;
+            transition: background-color 0.2s; /* Smooth hover effect */
+        }
+
+        .profile-popup .wallet-address button:hover {
+            background-color: #ccc; /* Darker gray on hover */
+        }
+
+        .profile-popup .close-button {
+            position: absolute;
+            top: 0.7rem; /* Increased top distance */
+            right: 0.7rem; /* Increased right distance */
+            cursor: pointer;
+            font-size: 1.4rem; /* Increased size */
+            color: #777; /* Gray color */
+            transition: color 0.2s; /* Smooth hover effect */
+        }
+
+        .profile-popup .close-button:hover {
+            color: #333; /* Darker gray on hover */
+        }
+        /* Add spacing between the elements */
+        .profile-popup > *:not(:last-child) {
+            margin-bottom: 10px;
+        }
+
+
+        /* Logout button style */
+        .logout-button {
+            padding: 0.75rem 1.5rem;
+            background: #000;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: opacity 0.2s;
+            display: block; /* Important: Make it a block-level element */
+            width: fit-content; /* Make the width fit its content */
+            margin: 1rem auto; /* Vertically center and add some top margin */
+        }
+
+        .logout-button:hover {
+            opacity: 0.8;
+        }
+
+
+        /* Overlay to dim the background */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6); /* Slightly darker overlay */
+            z-index: 999;
+            display: none; /* Hidden by default */
+        }
+        
+        /* Style the icon images */
+        .currency-icon {
+            width: 20px; /* Adjust as needed */
+            height: 20px;
+            margin-right: 5px; /* Space between icon and text */
+            vertical-align: middle;
+        }
+        
+        /* New styles for coin display */
+        .coin-display {
+            text-align: center;
+            margin: 20px 0 30px 0;
+            display: none; /* Hidden by default */
+        }
+        
+        .coin-display img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            margin-bottom: 15px;
+            object-fit: contain;
+            background-color: #fff;
+            padding: 10px;
+        }
+        
+        .coin-display h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .coin-display p {
+            color: #777;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .coin-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .coin-tab {
+            padding: 8px 15px;
+            background: #eee;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .coin-tab:hover {
+            background: #e0e0e0;
+        }
+        
+        .coin-tab.active {
+            background: #000;
+            color: #fff;
+            border-color: #000;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">testWALLET</div>
+        <div class="nav-links">
+            <a href="#currencies">Currencies</a>
+            <a href="#about">About</a>
+            <a href="/dashboard">Dashboard</a>
+        </div>
+        <div class="auth-buttons">
+            {% if isLoggedIn %}
+                <div class="profile-image" onclick="openProfilePopup()">
+                    <img src="{{ profile_image_url }}" alt="Profile">
+                </div>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="btn-login">Login</a>
+                <button class="register">Register</button>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="hero">
+        {% if isLoggedIn %}
+             <h1>Welcome, {{ firstname[0].upper() + firstname[1:] }}!</h1>
+        {% else %}
+            <h1>Secure Digital Asset Storage</h1>
+            <p>wallet under test -  designed for security and simplicity. Store and manage your digital assets with confidence.</p>
+            <button class="cta-button"><a href="{{ url_for('login') }}" class="btn-login">Create Account</a></button>
+        {% endif %}
+    </div>
+
+    <div class="features">
+        <h2>Core Features</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>Security First</h3>
+                <p>Advanced encryption and security protocols to protect your assets</p>
+            </div>
+            <div class="feature-card">
+                <h3>Multi-Currency</h3>
+                <p>Support for major digital currencies and tokens</p>
+            </div>
+            <div class="feature-card">
+                <h3>Simplified Experience</h3>
+                <p>Clean interface focused on essential functionality</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Popup -->
+    <div class="profile-popup" id="profilePopup">
+        <span class="close-button" onclick="closeProfilePopup()">×</span>
+        <h2>Profile Details</h2>
+        <p><strong>Name:</strong> {{ firstname }} {{ lastname }}</p>
+        <p><strong>Username:</strong> {{ username }}</p>
+        <p><strong>Email:</strong> {{ email }}</p>
+
+        <button class="logout-button" onclick="window.location.href='{{ url_for('logout') }}'">Logout</button>
+
+        <!-- Coin Tabs -->
+        <div class="coin-tabs">
+            <div class="coin-tab active" onclick="showCoin('btc')">BTC</div>
+            <div class="coin-tab" onclick="showCoin('usdt')">USDT</div>
+            <div class="coin-tab" onclick="showCoin('eth')">ETH</div>
+        </div>
+
+        <!-- Coin Display Areas -->
+        <div id="btc-display" class="coin-display" style="display: block;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/1200px-Bitcoin.svg.png" alt="Bitcoin">
+            <h3>Bitcoin (BTC)</h3>
+            <p>Your BTC wallet address is:</p>
+            <p> <span id = "btc_wallet_address"> {{ btc_address or 'N/A' }} </span> <button onclick="copyAddress('{{ btc_address }}')">Copy</button></p>
+        </div>
+
+        <div id="usdt-display" class="coin-display">
+            <img src="https://cryptologos.cc/logos/tether-usdt-logo.png?v=026" alt="Tether" width="100">
+            <h3>Tether (USDT)</h3>
+            <p>Your USDT wallet address is:</p>
+            <p> 
+                <span id="usdt_wallet_address"> {{ usdt_address or 'N/A' }} </span> 
+                <button onclick="copyAddress('{{ usdt_address }}')">Copy</button>
+            </p>
+        </div>
+        
+
+        <div id="eth-display" class="coin-display">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ethereum-icon-purple.svg/1200px-Ethereum-icon-purple.svg.png" alt="Ethereum">
+            <h3>Ethereum (ETH)</h3>
+              <p>Your ETH wallet address is:</p>
+            <p> <span id = "eth_wallet_address"> {{ eth_address or 'N/A' }} </span><button onclick="copyAddress('{{ eth_address }}')">Copy</button></p>
+        </div>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+
+
+    <script>
+        function openProfilePopup() {
+            document.getElementById('profilePopup').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+            // Default to showing Bitcoin when opening
+            showCoin('btc');
+        }
+
+        function closeProfilePopup() {
+            document.getElementById('profilePopup').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+         function copyAddress(address) {
+           if (navigator.clipboard) {
+               navigator.clipboard.writeText(address)
+                 .then(() => {
+                   alert('Address copied to clipboard!');
+                 })
+                 .catch(err => {
+                   console.error('Failed to copy: ', err);
+                   alert('Failed to copy address. Please try again.');
+                 });
+             } else {
+               alert('Clipboard API not available. Please manually copy the address.');
+             }
+        }
+        
+        function showCoin(coinType) {
+            // Hide all coin displays
+            document.querySelectorAll('.coin-display').forEach(display => {
+                display.style.display = 'none';
+            });
+            
+            // Show the selected coin display
+            document.getElementById(coinType + '-display').style.display = 'block';
+            
+            // Update tab active states
+            document.querySelectorAll('.coin-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Find the clicked tab and make it active
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

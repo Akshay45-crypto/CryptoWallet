@@ -1,0 +1,704 @@
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoVault - Modern Crypto Wallet</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <style>
+        :root {
+    --primary-color: #3b82f6;
+    --primary-hover: #2563eb;
+    --background: #f3f4f6;
+    --card-bg: #ffffff;
+    --text-primary: #111827;
+    --text-secondary: #6b7280;
+    --border-color: #e5e7eb;
+    --success: #10b981;
+    --error: #ef4444;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+        Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    background-color: var(--background);
+    color: var(--text-primary);
+    line-height: 1.5;
+}
+
+.container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Header Styles */
+.header {
+    background-color: var(--card-bg);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-content {
+    height: 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.wallet-icon {
+    color: var(--primary-color);
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 9999px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: background-color 0.2s;
+}
+
+.icon-button:hover {
+    background-color: var(--background);
+}
+
+.connect-wallet-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.connect-wallet-btn:hover {
+    background-color: var(--primary-hover);
+}
+
+/* Main Content */
+.main {
+    padding: 2rem 0;
+}
+
+.balance-card {
+    background: linear-gradient(to right, var(--primary-color), var(--primary-hover));
+    padding: 1.5rem;
+    border-radius: 1rem;
+    color: white;
+    margin-bottom: 2rem;
+}
+
+.balance-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+}
+
+.balance-amount {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-top: 0.25rem;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.action-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.action-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+}
+
+.assets-section,
+.network-section,
+.transactions-section {
+    background-color: var(--card-bg);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+}
+
+.network-section {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.transactions-section {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.network-select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    background-color: var(--card-bg);
+}
+
+.assets-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.asset-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.asset-item:last-child {
+    border-bottom: none;
+}
+
+.asset-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.asset-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    background-color: var(--background);
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+}
+
+.asset-details h3 {
+    font-weight: 500;
+}
+
+.asset-balance {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.asset-value {
+    text-align: right;
+}
+
+.asset-price {
+    font-weight: 500;
+}
+
+.asset-change {
+    font-size: 0.875rem;
+}
+
+.change-positive {
+    color: var(--success);
+}
+
+.change-negative {
+    color: var(--error);
+}
+
+.transactions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.transaction-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.transaction-item:last-child {
+    border-bottom: none;
+}
+
+.transaction-icon {
+    padding: 0.5rem;
+    border-radius: 9999px;
+}
+
+.transaction-send {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: var(--error);
+}
+
+.transaction-receive {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+}
+
+.transaction-details {
+    flex: 1;
+}
+
+.transaction-type {
+    font-weight: 500;
+}
+
+.transaction-hash {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: var(--card-bg);
+    padding: 2rem;
+    border-radius: 1rem;
+    width: 100%;
+    max-width: 32rem;
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-secondary);
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+}
+
+.primary-button {
+    width: 100%;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.primary-button:hover {
+    background-color: var(--primary-hover);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .network-section,
+    .transactions-section {
+        grid-column: 1;
+    }
+
+    .action-buttons {
+        flex-wrap: wrap;
+    }
+
+    .action-btn {
+        flex: 1;
+        min-width: 120px;
+    }
+}
+    </style>
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="wallet-icon"><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5c0-1.66 4-3 9-3s9 1.34 9 3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+                <span>CryptoVault</span>
+            </div>
+            <nav class="nav-actions">
+                <button class="icon-button" id="notificationsBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
+                </button>
+                <button class="icon-button" id="settingsBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                </button>
+                <button class="connect-wallet-btn" id="connectWalletBtn">Connect Wallet</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <section class="balance-card">
+                <div class="balance-header">
+                    <div>
+                        <h2>Total Balance</h2>
+                        <p class="balance-amount">$7,887.04</p>
+                    </div>
+                    <button class="icon-button refresh-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M3 21v-5h5"></path></svg>
+                    </button>
+                </div>
+                <div class="action-buttons">
+                    <button class="action-btn" id="sendBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                        Send
+                    </button>
+                    <button class="action-btn" id="receiveBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        Receive
+                    </button>
+                    <button class="action-btn" id="swapBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M3 21v-5h5"></path></svg>
+                        Swap
+                    </button>
+                </div>
+            </section>
+
+            <div class="content-grid">
+                <section class="assets-section">
+                    <h2>Assets</h2>
+                    <div class="assets-list" id="assetsList">
+                        <!-- Assets will be populated by JavaScript -->
+                    </div>
+                </section>
+
+                <section class="network-section">
+                    <h2>Network</h2>
+                    <select class="network-select" id="networkSelect">
+                        <option value="ethereum">Ethereum Mainnet</option>
+                        <option value="bsc">Binance Smart Chain</option>
+                        <option value="polygon">Polygon</option>
+                        <option value="arbitrum">Arbitrum</option>
+                    </select>
+                </section>
+
+                <section class="transactions-section">
+                    <div class="transactions-header">
+                        <h2>Recent Transactions</h2>
+                        <button class="icon-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"></path><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"></path></svg>
+                        </button>
+                    </div>
+                    <div class="transactions-list" id="transactionsList">
+                        <!-- Transactions will be populated by JavaScript -->
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modals -->
+    <div class="modal" id="sendModal">
+        <div class="modal-content">
+            <h2>Send Assets</h2>
+            <button class="close-modal">&times;</button>
+            <form id="sendForm">
+                <div class="form-group">
+                    <label for="recipient">Recipient Address</label>
+                    <input type="text" id="recipient" placeholder="0x..." required>
+                </div>
+                <div class="form-group">
+                    <label for="amount">Amount</label>
+                    <input type="number" id="amount" step="0.000001" required>
+                </div>
+                <div class="form-group">
+                    <label for="asset">Asset</label>
+                    <select id="asset" required>
+                        <option value="ETH">ETH</option>
+                        <option value="BTC">BTC</option>
+                    </select>
+                </div>
+                <button type="submit" class="primary-button">Send</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const mockAssets = [
+    { symbol: 'ETH', name: 'Ethereum', balance: '1.234', price: 3245.67, change24h: 2.5, value: 4005.15 },
+    { symbol: 'BTC', name: 'Bitcoin', balance: '0.0891', price: 43567.89, change24h: -1.2, value: 3881.89 },
+];
+
+const mockTransactions = [
+    {
+        hash: '0x1234...5678',
+        type: 'send',
+        amount: '0.1',
+        token: 'ETH',
+        timestamp: Date.now() - 3600000,
+        status: 'confirmed',
+        to: '0xabcd...efgh'
+    },
+    {
+        hash: '0x8765...4321',
+        type: 'receive',
+        amount: '0.05',
+        token: 'ETH',
+        timestamp: Date.now() - 7200000,
+        status: 'confirmed',
+        from: '0xijkl...mnop'
+    },
+];
+
+// Web3 Provider Check
+function checkWeb3Provider() {
+    if (typeof window.ethereum !== 'undefined') {
+        return window.ethereum;
+    }
+    return null;
+}
+
+// Wait for DOM to be fully loaded before initializing
+document.addEventListener('DOMContentLoaded', function() {
+    // DOM Elements
+    const connectWalletBtn = document.getElementById('connectWalletBtn');
+    const sendBtn = document.getElementById('sendBtn');
+    const receiveBtn = document.getElementById('receiveBtn');
+    const swapBtn = document.getElementById('swapBtn');
+    const assetsList = document.getElementById('assetsList');
+    const transactionsList = document.getElementById('transactionsList');
+    const sendModal = document.getElementById('sendModal');
+    const closeModal = document.querySelector('.close-modal');
+    const sendForm = document.getElementById('sendForm');
+
+    // Event Listeners
+    if (connectWalletBtn) {
+        const provider = checkWeb3Provider();
+        if (provider) {
+            connectWalletBtn.addEventListener('click', () => connectWallet(provider));
+        } else {
+            connectWalletBtn.addEventListener('click', () => {
+                alert('Please install MetaMask or another Web3 wallet');
+            });
+        }
+    }
+    
+    if (sendBtn) sendBtn.addEventListener('click', () => showModal(sendModal));
+    if (closeModal) closeModal.addEventListener('click', () => hideModal(sendModal));
+    if (sendForm) sendForm.addEventListener('submit', handleSend);
+
+    // Initialize the app
+    init();
+
+    // Render Functions
+    function renderAssets() {
+        if (!assetsList) return;
+        assetsList.innerHTML = mockAssets.map(asset => `
+            <div class="asset-item">
+                <div class="asset-info">
+                    <div class="asset-icon">${asset.symbol}</div>
+                    <div class="asset-details">
+                        <h3>${asset.name}</h3>
+                        <p class="asset-balance">${asset.balance} ${asset.symbol}</p>
+                    </div>
+                </div>
+                <div class="asset-value">
+                    <p class="asset-price">$${asset.value.toFixed(2)}</p>
+                    <p class="asset-change ${asset.change24h >= 0 ? 'change-positive' : 'change-negative'}">
+                        ${asset.change24h >= 0 ? '+' : ''}${asset.change24h}%
+                    </p>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function renderTransactions() {
+        if (!transactionsList) return;
+        transactionsList.innerHTML = mockTransactions.map(tx => `
+            <div class="transaction-item">
+                <div class="transaction-icon ${tx.type === 'send' ? 'transaction-send' : 'transaction-receive'}">
+                    ${tx.type === 'send' 
+                        ? '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>'
+                        : '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="17" y1="7" x2="7" y2="17"></line><polyline points="17 17 7 17 7 7"></polyline></svg>'
+                    }
+                </div>
+                <div class="transaction-details">
+                    <p class="transaction-type">${tx.type === 'send' ? 'Sent' : 'Received'} ${tx.amount} ${tx.token}</p>
+                    <p class="transaction-hash">${tx.hash}</p>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // Wallet Functions
+    async function connectWallet(provider) {
+        try {
+            const accounts = await provider.request({ 
+                method: 'eth_requestAccounts',
+                params: [] 
+            });
+            
+            if (accounts && accounts.length > 0) {
+                connectWalletBtn.textContent = 'Connected';
+                connectWalletBtn.disabled = true;
+                
+                // Set up provider event listeners
+                provider.on('accountsChanged', handleAccountsChanged);
+                provider.on('chainChanged', handleChainChanged);
+            }
+        } catch (error) {
+            console.error('Wallet connection error:', error);
+            alert('Failed to connect wallet. Please try again.');
+        }
+    }
+
+    function handleAccountsChanged(accounts) {
+        if (accounts.length === 0) {
+            // User disconnected their wallet
+            connectWalletBtn.textContent = 'Connect Wallet';
+            connectWalletBtn.disabled = false;
+        }
+    }
+
+    function handleChainChanged(chainId) {
+        // Reload the page when the chain changes
+        window.location.reload();
+    }
+
+    // Modal Functions
+    function showModal(modal) {
+        if (modal) modal.classList.add('active');
+    }
+
+    function hideModal(modal) {
+        if (modal) modal.classList.remove('active');
+    }
+
+    // Form Handlers
+    function handleSend(e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        console.log('Sending transaction:', Object.fromEntries(formData));
+        hideModal(sendModal);
+        // Here you would typically interact with the blockchain
+        alert('Transaction submitted! (This is a mock implementation)');
+    }
+
+    // Network Functions
+    function setupNetworkListeners() {
+        const networkSelect = document.getElementById('networkSelect');
+        if (networkSelect) {
+            networkSelect.addEventListener('change', async (e) => {
+                const provider = checkWeb3Provider();
+                if (!provider) {
+                    alert('Please install MetaMask or another Web3 wallet');
+                    return;
+                }
+
+                try {
+                    await provider.request({
+                        method: 'wallet_switchEthereumChain',
+                        params: [{ chainId: getChainIdForNetwork(e.target.value) }],
+                    });
+                } catch (error) {
+                    console.error('Failed to switch network:', error);
+                    alert('Failed to switch network. Please try again.');
+                }
+            });
+        }
+    }
+
+    function getChainIdForNetwork(network) {
+        const chainIds = {
+            'ethereum': '0x1',
+            'bsc': '0x38',
+            'polygon': '0x89',
+            'arbitrum': '0xa4b1'
+        };
+        return chainIds[network] || '0x1';
+    }
+
+    // Initialize the app
+    function init() {
+        renderAssets();
+        renderTransactions();
+        setupNetworkListeners();
+    }
+});
+    </script>
+</body>
+</html>

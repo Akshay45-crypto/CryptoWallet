@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login/Register</title>
+    <style>
+        /* Resets and General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f4f4; /* Light grey background */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navigation Bar */
+        nav {
+            background: #222; /* Darker background for nav */
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #fff; /* White logo text */
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        /* Authentication Container */
+        .auth-container {
+            max-width: 500px; /* Slightly wider for better spacing */
+            margin: 3rem auto; /* Adjusted top margin */
+            padding: 2rem;
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            margin-bottom: 1.5rem; /* Reduced margin */
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 1.1rem;
+            color: #777; /* Slightly darker text */
+            transition: color 0.2s; /* Smooth color transition */
+        }
+
+        .tab:hover {
+            color: #333;
+        }
+
+        .tab.active {
+            color: #333;
+            border-bottom: 3px solid #333;
+            font-weight: 500;
+        }
+
+        /* Form Container */
+        .form-container {
+            display: none;
+        }
+
+        .form-container.active {
+            display: block;
+        }
+
+        /* Form Groups */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.3rem;
+            color: #444;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        input[type="email"],
+        input[type="password"],
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 0.6rem 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+            color: #555;
+            transition: border-color 0.2s;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #555;
+        }
+
+        /* Submit Button */
+        button[type="submit"] {
+            width: 100%;
+            padding: 0.8rem;
+            background: #333; /* Darker button */
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin-top: 0.75rem;
+            transition: background-color 0.2s;
+        }
+
+        button[type="submit"]:hover {
+            background: #555;
+        }
+
+        /* Helper Text */
+        .helper-text {
+            font-size: 0.85rem;
+            color: #777;
+            margin-top: 0.3rem;
+            display: block;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 0.8rem;
+            margin-top: 0.3rem;
+        }
+
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">testWALLET</a>
+    </nav>
+
+    <div class="auth-container">
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('login')">Login</button>
+            <button class="tab" onclick="switchTab('register')">Register</button>
+        </div>
+
+        <div id="login" class="form-container active">
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" name="email" required>
+                    <div id="login-email-error" class="error-message"></div>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" name="password" required>
+                    <div id="login-password-error" class="error-message"></div>
+                    <a href="#" class="helper-text">Forgot password?</a>
+                </div>
+                <button type="submit">Login</button>
+                <div id="login-error" class="error-message"></div>
+            </form>
+        </div>
+
+        <div id="register" class="form-container">
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="firstname">First Name</label>
+                    <input type="text" id="firstname" name="firstname" required>
+                    <div id="firstname-error" class="error-message"></div>
+                </div>
+                <div class="form-group">
+                    <label for="lastname">Last Name</label>
+                    <input type="text" id="lastname" name="lastname" required>
+                     <div id="lastname-error" class="error-message"></div>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" name="email" required>
+                     <div id="register-email-error" class="error-message"></div>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Password</label>
+                    <input type="password" id="register-password" name="password" required>
+                     <div id="register-password-error" class="error-message"></div>
+                </div>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                     <div id="username-error" class="error-message"></div>
+                </div>
+                <button type="submit">Register</button>
+                 <div id="register-error" class="error-message"></div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.form-container').forEach(f => f.classList.remove('active'));
+            document.getElementById(tab).classList.add('active');
+
+            // Add active class to the clicked tab
+            const clickedTab = event.target;
+            clickedTab.classList.add('active');
+        }
+
+        // --- Login Form Submission (AJAX) ---
+        document.getElementById('loginForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            // Clear previous error messages
+            document.getElementById('login-email-error').textContent = '';
+            document.getElementById('login-password-error').textContent = '';
+            document.getElementById('login-error').textContent = '';
+
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            // Basic client-side validation (you should still validate on the server)
+            if (!email) {
+                document.getElementById('login-email-error').textContent = 'Email is required.';
+                return;
+            }
+            if (!password) {
+                document.getElementById('login-password-error').textContent = 'Password is required.';
+                return;
+            }
+
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email, password: password })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.redirect) {
+                        window.location.href = data.redirect; // Redirect if the server provides a redirect URL
+                    } else {
+                        window.location.href = '/dashboard'; // Fallback to dashboard
+                    }
+                } else {
+                    const errorData = await response.json();
+                    document.getElementById('login-error').textContent = errorData.error || "Login failed";
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                document.getElementById('login-error').textContent = "An error occurred during login.";
+            }
+        });
+
+        // --- Registration Form Submission (JSON) ---
+        document.getElementById('registerForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            // Clear previous error messages
+            document.getElementById('firstname-error').textContent = '';
+            document.getElementById('lastname-error').textContent = '';
+            document.getElementById('register-email-error').textContent = '';
+            document.getElementById('register-password-error').textContent = '';
+            document.getElementById('username-error').textContent = '';
+            document.getElementById('register-error').textContent = '';
+
+            const formData = {
+                firstname: document.getElementById('firstname').value,
+                lastname: document.getElementById('lastname').value,
+                email: document.getElementById('register-email').value,
+                password: document.getElementById('register-password').value,
+                username: document.getElementById('username').value
+            };
+
+            // Basic client-side validation
+             if (!formData.firstname) {
+                document.getElementById('firstname-error').textContent = 'First name is required.';
+                return;
+            }
+
+            if (!formData.email) {
+                document.getElementById('register-email-error').textContent = 'Email is required.';
+                return;
+            }
+
+            if (!formData.password) {
+                document.getElementById('register-password-error').textContent = 'Password is required.';
+                return;
+            }
+
+            if (!formData.username) {
+                document.getElementById('username-error').textContent = 'Username is required.';
+                return;
+            }
+
+
+            try {
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    alert('Registration successful!');
+                    window.location.href = '/login'; // Redirect to login after registration
+                } else {
+                    const result = await response.json();
+                    document.getElementById('register-error').textContent = result.message || 'Registration failed.';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('register-error').textContent = 'An error occurred.';
+            }
+        });
+        console.log("Login Data:", { email: email, password: password }); // Before login fetch()
+
+console.log("Register Data:", formData); // Before register fetch()
+    </script>
+</body>
+</html>

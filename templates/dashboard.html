@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>testWALLET</title>
+    <style>
+        /* Existing styles - Keep these */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f5f5; /* Changed to a light gray */
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: rgb(0, 0, 0);
+            border-bottom: 1px solid #eaeaea;
+            color: white;
+        }
+
+        .logo {
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: white;
+        }
+
+        .user-circle {
+            width: 40px;  /* Increased for better visibility */
+            height: 40px;
+            background: black; /* or a default user color */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;  /* Add cursor for clickability */
+            position: relative;
+        }
+
+        .user-circle img { /* Style the profile image */
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .main-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .balance-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Added subtle shadow */
+        }
+
+        .balance-label {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .balance-amount {
+            font-size: 2rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+             /* Added to keep buttons within the card */
+            justify-content: flex-start; /* Align buttons to the left */
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: black;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: opacity 0.2s;
+        }
+
+        .action-btn:hover {
+            opacity: 0.9;
+        }
+
+        .action-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .assets-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Added subtle shadow */
+            /* Ensure the width matches the balance card */
+            width: 100%;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+
+        .asset-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eaeaea;
+        }
+
+        .asset-info {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .asset-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+        }
+
+        .asset-icon img { /* Style for logo images */
+            width: 100%;
+            height: 100%;
+            border-radius: 50%; /* Ensure image is circular */
+            object-fit: cover; /* Prevents image distortion */
+        }
+
+        .asset-details h3 {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .asset-amount {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .asset-value {
+            text-align: right;
+        }
+
+        .value-change {
+            font-size: 0.9rem;
+            /* stylelint-disable-next-line no-duplicate-selectors */
+        }
+
+        .positive {
+            color: #22c55e;
+        }
+
+        .negative {
+            color: #ef4444;
+        }
+
+        /* Popup Styles */
+        .profile-popup {
+            position: absolute; /* Relative to the profile-image */
+            top: 100%; /* Position below the image */
+            right: 0; /* Align to the right edge of the image */
+            background: #f2f2f2;  /* Light gray background */
+            padding: 1rem;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); /* Stronger shadow */
+            z-index: 1000; /* Ensure it's on top of everything */
+            display: none; /* Hidden by default */
+            width: 300px;
+            border-radius: 5px; /* Rounded corners */
+            text-align: left;
+
+        }
+
+        .profile-popup h2 {
+            margin-bottom: 0.5rem; /* Reduced margin */
+            font-size: 1rem;
+            color: #333; /* Darker text */
+            border-bottom: 1px solid #ddd; /* Add a subtle divider */
+            padding-bottom: 0.3rem;
+        }
+
+        .profile-popup p {
+            margin-bottom: 0.3rem; /* Reduced margin */
+            color: #555;
+        }
+        .profile-popup p strong{
+            font-weight: bold;
+            color: black;
+        }
+
+        .profile-popup .wallet-addresses {
+            margin-bottom: 0.5rem; /* Reduced margin */
+            border: 1px solid #ddd; /* Light border */
+            padding: 0.5rem;
+            background: #fff; /* White background for contrast */
+            border-radius: 5px;
+        }
+       .profile-popup .wallet-addresses div{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .profile-popup .wallet-addresses p {
+            word-break: break-all; /* Prevent overflow */
+            margin-right: 0.5rem;
+            margin-bottom: 0;
+        }
+
+        .profile-popup .wallet-addresses button {
+            background: #ddd;  /* Lighter gray button */
+            border: none;
+            padding: 0.3rem 0.5rem;
+            cursor: pointer;
+            font-size: 0.8rem;
+            border-radius: 3px;
+            transition: background-color 0.2s; /* Smooth hover effect */
+            height: fit-content;
+        }
+
+        .profile-popup .wallet-addresses button:hover {
+            background-color: #ccc; /* Darker gray on hover */
+        }
+        .profile-popup .wallet-addresses img {
+            width: 20px; /* Adjust size as needed */
+            height: 20px;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+
+        .profile-popup .close-button {
+            position: absolute;
+            top: 0.3rem; /* Increased top distance */
+            right: 0.3rem; /* Increased right distance */
+            cursor: pointer;
+            font-size: 1.2rem; /* Increased size */
+            color: #777; /* Gray color */
+            transition: color 0.2s; /* Smooth hover effect */
+        }
+        .profile-popup .copy-icon {
+            width: 20px; /* Adjust size as needed */
+            height: 20px;
+            vertical-align: middle;
+        }
+
+        .profile-popup .close-button:hover {
+            color: #333; /* Darker gray on hover */
+        }
+
+        /* Overlay to dim the background */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6); /* Slightly darker overlay */
+            z-index: 999;
+            display: none; /* Hidden by default */
+        }
+
+        /* Receive Popup Styles */
+        .receive-popup {
+            position: fixed; /* Centered on screen */
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            background: #222; /* Dark background */
+            color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            z-index: 1001; /* Above everything */
+            display: none; /* Hidden by default */
+            width: 400px; /* Adjust as needed */
+        }
+
+        .receive-popup .step {
+            margin-bottom: 20px;
+            position: relative;
+            padding-left: 30px; /* Space for the step number */
+        }
+
+        .receive-popup .step:before {
+            content: attr(data-step);
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #333;
+            color: #fff;
+            text-align: center;
+            line-height: 25px;
+            font-size: 0.8em;
+        }
+
+        .receive-popup h3 {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            color: #ddd;
+        }
+
+        .receive-popup select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #444;
+            background: #333;
+            color: #fff;
+            appearance: none;  /* Remove default arrow */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fff'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"); /* Custom arrow */
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 1em;
+
+        }
+
+        .receive-popup select::-ms-expand {
+            display: none; /* For IE 11 */
+        }
+
+        .receive-popup .address-section {
+            background: #333;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .receive-popup .qr-code {
+            width: 120px;
+            height: 120px;
+            background: #fff; /* Placeholder */
+            margin: 0 auto 10px;
+        }
+
+        .receive-popup .address {
+            word-break: break-all;
+            font-size: 0.8em;
+            margin-bottom: 10px;
+        }
+
+        .receive-popup .min-deposit {
+            font-size: 0.7em;
+            color: #999;
+        }
+        .receive-popup .copy-button{
+            background: #ddd;  /* Lighter gray button */
+            border: none;
+            padding: 0.4rem 0.7rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            border-radius: 3px;
+            transition: background-color 0.2s; /* Smooth hover effect */
+        }
+        .receive-popup .close-button {
+            position: absolute;
+            top: 0.3rem; /* Increased top distance */
+            right: 0.3rem; /* Increased right distance */
+            cursor: pointer;
+            font-size: 1.2rem; /* Increased size */
+            color: #777; /* Gray color */
+            transition: color 0.2s; /* Smooth hover effect */
+        }
+
+        /* Overlay to dim the background */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6); /* Slightly darker overlay */
+            z-index: 1000;
+            display: none; /* Hidden by default */
+        }
+        .send-popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        width: 300px;
+        z-index: 1000;
+    }
+
+    .close-button {
+        float: right;
+        cursor: pointer;
+        font-size: 20px;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .send-button {
+        width: 100%;
+        padding: 10px;
+        background: blueviolet;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .action-btn {
+        display: flex;
+        align-items: center;
+        background: blueviolet;
+        color: rgb(255, 255, 255);
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        gap: 8px;
+    }
+
+    .action-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+    /* Hide assets card if no assets */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="{{ url_for('home') }}" class="logo">testWALLET</a>
+
+        <div class="user-circle" onclick="toggleProfilePopup()">
+            {% if profile_image_url %}
+                <img src="{{ profile_image_url }}" alt="Profile">
+            {% else %}
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="balance-card">
+            <div class="balance-label">Total Balance</div>
+            <div class="balance-amount">${{ total_balance | round(2) }}</div>
+            <div class="action-buttons">
+                <button class="action-btn" onclick="window.location.href='{{ url_for('send') }}'">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                    </svg>
+                    Send
+                </button>
+                <button class="action-btn" onclick="openReceivePopup()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" transform="rotate(180 12 12)"/>
+                    </svg>
+                    Receive
+                </button>
+                <button class="action-btn"  onclick="window.location.href='{{ url_for('swap') }}'">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M7 16V4M7 4L3 8M7 4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/>
+                    </svg>
+                    Swap
+                </button>
+                <!-- Buy Button in dashboard.html -->
+                <button class="action-btn" onclick="window.location.href='{{ url_for('buycrypto') }}'">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 3h18v18H3zM12 8v8M8 12h8"/>
+                    </svg>
+                    Buy
+                </button>
+            </div>
+        </div>
+
+        <!-- Assets Card - Conditionally Hidden -->
+        {% if total_balance > 0 %}
+            <div class="assets-card">
+                <div class="card-title">Assets</div>
+
+                {% for asset in assets %}
+                    <div class="asset-item">
+                        <div class="asset-info">
+                            <div class="asset-icon">
+                                <img src="{{ asset.logo_url }}" alt="{{ asset.name }} Logo">
+                            </div>
+                            <div class="asset-details">
+                                <h3>{{ asset.name }}</h3>
+                                <div class="asset-amount">{{ asset.quantity }} {{ asset.symbol }}</div>
+                            </div>
+                        </div>
+                        <div class="asset-value">
+                            <div id="{{ asset.symbol }}-price">$0.00</div> <!-- Placeholder, will be populated by JavaScript -->
+                            <div class="value-change" id="{{ asset.symbol }}-change"></div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No assets held.</p>
+        {% endif %}
+    </div>
+
+    <!-- Receive Popup -->
+    <div class="receive-popup" id="receivePopup">
+        <span class="close-button" onclick="closeReceivePopup()">×</span>
+        <div class="step" data-step="1">
+            <h3>Select Coin</h3>
+            <select id="selectCoin">
+                <option>USDT TetherUS</option>
+                <option>Bitcoin</option>
+                <option>Ethereum</option>
+                <option>Dogecoin</option>
+
+            </select>
+        </div>
+
+        <div class="step" data-step="2">
+            <h3>Select Network</h3>
+            <select id="selectNetwork">
+                <option>TRX Tron (TRC20)</option>
+                <option>Ethereum (ERC20)</option>
+                <option>Bitcoin Network</option>
+            </select>
+            <div>Contract address ending in jLj6t ></div>
+        </div>
+
+        <div class="step" data-step="3">
+            <h3>Deposit Address</h3>
+            <div class="address-section">
+                <div class="qr-code">
+                    <!-- QR Code Image Here (Dynamically Generated) -->
+                </div>
+                <div class="address">TMRyjGtTjUmbegr1kPtoYXZZVp3Rtr2U97</div>
+                 <button class="copy-button" onclick="copyAddress()">Copy</button>
+                <div class="min-deposit">Minimum deposit More than 0.01 USDT</div>
+            </div>
+        </div>
+    </div>
+    <div class="send-popup" id="sendPopup">
+        <span class="close-button" onclick="closeSendPopup()">×</span>
+
+        <div class="step" data-step="1">
+            <h3>Select Coin</h3>
+            <select id="sendSelectCoin">
+                <option>USDT TetherUS</option>
+                <option>Bitcoin</option>
+                <option>Ethereum</option>
+                <option>Dogecoin</option>
+            </select>
+        </div>
+
+        <div class="step" data-step="2">
+            <h3>Enter Amount</h3>
+            <input type="number" id="sendAmount" placeholder="Enter amount" min="0.01">
+        </div>
+
+        <div class="step" data-step="3">
+            <h3>Enter Receiver’s Wallet Address</h3>
+            <input type="text" id="receiverAddress" placeholder="Enter wallet address">
+        </div>
+
+        <button class="send-button" onclick="sendCrypto()">Send</button>
+    </div>
+
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+       <!-- Profile Popup -->
+         {% if session['username'] %}
+         <div class="profile-popup" id="profilePopup">
+           <span class="close-button" onclick="toggleProfilePopup()">×</span>
+           <h2>Profile Details</h2>
+           <p><strong>Name:</strong> {{ firstname }} {{ lastname }}</p>
+           <p><strong>Username:</strong> {{ session['username'] }}</p>
+           <p><strong>Email:</strong> {{ email }}</p>
+
+           <h3>Wallet Addresses</h3>
+           <div class="wallet-addresses">
+             <div>
+               <p>
+                 <img
+                   src="https://cdn-icons-png.flaticon.com/128/535/535219.png"
+                   alt="BTC Icon"
+                 />
+                 BTC: [BTC address placeholder]
+               </p>
+               <button onclick="copyAddress('btc_address')">Copy</button>
+             </div>
+             <div>
+               <p>
+                 <img
+                   src="https://upload.wikimedia.org/wikipedia/en/thumb/9/94/Usdt_logo.svg/480px-Usdt_logo.svg.png"
+                   alt="USDT Icon"
+                 />
+                 USDT: [USDT address placeholder]
+               </p>
+               <button onclick="copyAddress('usdt_address')">Copy</button>
+             </div>
+             <div>
+               <p>
+                 <img
+                   src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Ethereum_logo_2014.svg/1200px-Ethereum_logo_2014.svg.png"
+                   alt="ETH Icon"
+                 />
+                 ETH: [ETH address placeholder]
+               </p>
+               <button onclick="copyAddress('eth_address')">Copy</button>
+             </div>
+           </div>
+         </div>
+         {% endif %}
+    <script>
+         function copyAddress(addressId) {
+            // Find the <p> element containing the address
+            const addressElement = document.querySelector(`.wallet-addresses:has(p > img[alt="BTC Icon"]), .wallet-addresses:has(p > img[alt="USDT Icon"]), .wallet-addresses:has(p > img[alt="ETH Icon"])`); // added has() selector for better accuracy and prevent incorrect copy from other sections
+            if (addressElement) {
+                // Extract the address from the <p> element, remove the "BTC:", "USDT:", etc.
+                const addressText = addressElement.textContent.split(':')[1].trim();
+
+                // Use the Clipboard API
+                navigator.clipboard.writeText(addressText)
+                    .then(() => {
+                        alert('Address copied to clipboard!');
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy address: ', err);
+                        alert('Failed to copy address.  Please try again.');
+                    });
+            } else {
+                console.error('Address element not found for ID: ' + addressId);
+                alert('Address not found!');
+            }
+        }
+         function toggleProfilePopup() {
+            const popup = document.getElementById('profilePopup');
+            popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+        }
+        function updateCoinPrices() {
+            {% for asset in assets %}
+            // Fetch {{ asset.symbol }} price
+            fetch('https://api.coingecko.com/api/v3/simple/price?ids={{ asset.coingecko_id }}&vs_currencies=usd')  // Replace with a reliable API. Use coingecko IDs
+                .then(response => response.json())
+                .then(data => {
+                    const assetPrice = data['{{ asset.coingecko_id }}'].usd; // Make sure that the API response structure aligns with this
+                    document.getElementById('{{ asset.symbol }}-price').textContent = '$' + assetPrice.toFixed(2);
+                })
+                .catch(error => console.error('Error fetching {{ asset.symbol }} price:', error));
+            {% endfor %}
+        }
+
+        // Update prices every second (1000 milliseconds)
+        setInterval(updateCoinPrices, 1000);
+
+        // Initial price update
+        updateCoinPrices();
+
+        function openReceivePopup() {
+            document.getElementById('receivePopup').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        function closeReceivePopup() {
+            document.getElementById('receivePopup').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+        function openSendPopup() {
+        document.getElementById("sendPopup").style.display = "block";
+    }
+
+    function closeSendPopup() {
+        document.getElementById("sendPopup").style.display = "none";
+    }
+
+    function sendCrypto() {
+        const coin = document.getElementById("sendSelectCoin").value;
+        const amount = document.getElementById("sendAmount").value;
+        const address = document.getElementById("receiverAddress").value;
+
+        if (!amount || !address) {
+            alert("Please enter all details.");
+            return;
+        }
+
+        alert(`Sending ${amount} ${coin} to ${address}`);
+        closeSendPopup();
+    }
+    function redirectToBuy() {
+        window.location.href = "buycrypto.html";
+    }
+    </script>
+</body>
+</html>
