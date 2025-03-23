@@ -393,6 +393,153 @@ def swap():
     return render_template('swap.html')
 
 
+#  ✅ SEND CRYPTO ROUTE
+#  ✅ SEND CRYPTO ROUTE
+#  ✅ SEND CRYPTO ROUTE
+@app.route('/send_crypto', methods=['POST'])
+def send_crypto():
+    if 'user_id' not in session:
+        return jsonify({'error': 'Not logged in'}), 401
+
+    data = request.get_json()
+    currency_type = data.get('coin')  # Use 'coin' to match the frontend
+    amount = data.get('amount')
+    receiver_address = data.get('receiverAddress')
+
+    if not all([currency_type, amount, receiver_address]):
+        return jsonify({'error': 'All fields are required'}), 400
+
+    try:
+        amount = float(amount)  # Validate the amount
+        if amount <= 0:
+            return jsonify({'error': 'Amount must be positive'}), 400
+    except ValueError:
+        return jsonify({'error': 'Invalid amount format'}), 400
+
+    user_id = session['user_id']  # The sender is the logged-in user
+    conn = get_db_connection()
+    if not conn:
+        return jsonify({'error': "Failed to connect to database."}), 500
+
+    cursor = conn.cursor()
+    try:
+        # ✅Get logged in user's selected coin wallet address
+        cursor.execute(
+            """
+            SELECT wallet_address 
+            FROM wallets 
+            WHERE user_id = %s 
+            AND currency_type = %s
+            """,
+            (user_id, currency_type)
+        )
+        sender_wallet_result = cursor.fetchone()
+
+        # User doesn't have a wallet with that coin
+        if not sender_wallet_result:
+            conn.rollback()
+            return jsonify({'error': 'Sender wallet not found for this currency'}), 404
+
+        sender_wallet_address = sender_wallet_result[0]
+        logging.debug(f"Sender wallet address: {sender_wallet_address}")
+
+        # Verify sender's balance
+        cursor.execute(
+            """
+            SELECT balance
+            FROM balances
+            WHERE user_id = %s
+            AND currency_type = %s
+            """,
+            (user_id, currency_type)
+        )
+        sender_balance_result = cursor.fetchone()
+
+        # Balance is not set up for this user
+        if not sender_balance_result:
+            conn.rollback()
+            return jsonify({'error': 'Sender balance not found'}), 404
+
+        sender_balance = float(sender_balance_result[0])
+        logging.debug(f"Sender balance: {sender_balance}")
+
+        # Prevent transaction if there isn't sufficient balance
+        if sender_balance < amount:
+            return jsonify({'error': 'Insufficient balance'}), 400
+
+        # Verify if receiver exists
+        cursor.execute(
+            """
+            SELECT user_id
+            FROM wallets
+            WHERE wallet_address = %s
+            AND currency_type = %s
+            """,
+            (receiver_address, currency_type)
+        )
+        receiver_wallet_result = cursor.fetchone()
+
+        # No wallet set up to receive it
+        if not receiver_wallet_result:
+            conn.rollback()
+            return jsonify({'error': 'Receiver wallet not found'}), 404
+
+        receiver_user_id = receiver_wallet_result[0]
+        logging.debug(f"Receiver user ID: {receiver_user_id}")
+
+        # Reduce balance from sender
+        cursor.execute(
+            """
+            UPDATE balances
+            SET balance = balance - %s
+            WHERE user_id = %s
+            AND currency_type = %s
+            """,
+            (amount, user_id, currency_type)
+        )
+
+        # Add balance to receiver
+        cursor.execute(
+            """
+            UPDATE balances
+            SET balance = balance + %s
+            WHERE user_id = %s
+            AND currency_type = %s
+            """,
+            (amount, receiver_user_id, currency_type)
+        )
+
+        #  ✅ Record transactions
+        cursor.execute(
+            """
+            INSERT INTO transactions (sender_address, receiver_address, amount, currency_type)
+            VALUES (%s, %s, %s, %s)
+            """,
+            (sender_wallet_address, receiver_address, amount, currency_type)
+        )
+
+        conn.commit()  # Commit
+
+        # If everything goes according to plan, it will return success
+        return jsonify(
+            {
+                'success': True,
+                'message': f'Successfully sent {amount} {currency_type} to {receiver_address}'
+            }
+        ), 200
+
+    except Exception as e:
+        if conn:
+            conn.rollback()
+        logging.error(f"Transaction failed: {e}")
+        return jsonify({'error': f"Transaction failed: {str(e)}"}), 500
+
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+
 # ✅ Run App
 if __name__ == '__main__':
     app.run(debug=True)

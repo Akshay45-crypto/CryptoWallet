@@ -162,12 +162,17 @@
 
         <label for="sendSelectCoin">Select Coin:</label>
         <div class="custom-select">
-            <img id="selectedIcon" src="https://assets.coingecko.com/coins/images/325/small/Tether-logo.png" alt="Coin Icon">
+            <img id="selectedIcon" src="https://assets.coingecko.com/coins/images/325/small/Tether-logo.png"
+                alt="Coin Icon">
             <select id="sendSelectCoin" onchange="updateIcon(); validateAmount(); validateAddress()">
-                <option value="USDT" data-icon="https://assets.coingecko.com/coins/images/325/small/Tether-logo.png" data-min="1">USDT</option>
-                <option value="Bitcoin" data-icon="https://assets.coingecko.com/coins/images/1/small/bitcoin.png" data-min="0.001">Bitcoin</option>
-                <option value="Ethereum" data-icon="https://assets.coingecko.com/coins/images/279/small/ethereum.png" data-min="0.01">Ethereum</option>
-                <option value="Dogecoin" data-icon="https://assets.coingecko.com/coins/images/5/small/dogecoin.png" data-min="0">Dogecoin</option>
+                <option value="USDT" data-icon="https://assets.coingecko.com/coins/images/325/small/Tether-logo.png"
+                    data-min="1">USDT</option>
+                <option value="Bitcoin" data-icon="https://assets.coingecko.com/coins/images/1/small/bitcoin.png"
+                    data-min="0.001">Bitcoin</option>
+                <option value="Ethereum" data-icon="https://assets.coingecko.com/coins/images/279/small/ethereum.png"
+                    data-min="0.01">Ethereum</option>
+                <option value="Dogecoin" data-icon="https://assets.coingecko.com/coins/images/5/small/dogecoin.png"
+                    data-min="0">Dogecoin</option>
             </select>
         </div>
 
@@ -265,7 +270,37 @@
                 alert(`Please enter an amount greater than or equal to the minimum amount which is ${minAmount} for ${coinType}.`);
                 return;
             }
-            alert(`Sending ${amount} ${coin} to ${address}`);
+
+            // *** NEW CODE HERE ***
+            // Prepare data to send to the server
+            const sendData = {
+                coin: coin,
+                amount: amount,
+                receiverAddress: address
+            };
+
+            // Send data to the backend using fetch
+            fetch('/send_crypto', {  // Replace '/send_crypto' with your actual backend endpoint
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(sendData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);  // Display success message
+                        // Optionally redirect or update the UI
+                    } else {
+                        alert(data.error);    // Display error message
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while processing your request.');
+                });
+            // *** END NEW CODE ***
         }
 
         // Implement functions to validate different types of addresses
@@ -293,9 +328,9 @@
             // Basic Bitcoin address validation using regular expression
             return /^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,39}$/.test(address);
         }
-function isValidRawBitcoinAddress(address) {
-        return false
-}
+        function isValidRawBitcoinAddress(address) {
+            return false
+        }
     </script>
 </body>
 
