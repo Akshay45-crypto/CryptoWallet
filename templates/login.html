@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login/Register</title>
+    <title>Pixel Vault - Login/Register</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         /* Resets and General Styles */
         * {
@@ -12,7 +13,8 @@
         }
 
         body {
-            background: #f4f4f4; /* Light grey background */
+            background: #121212; /* Dark grey background */
+            color: #fff;  /* White text */
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -20,7 +22,7 @@
 
         /* Navigation Bar */
         nav {
-            background: #222; /* Darker background for nav */
+            background: #1e1e1e; /* Darker background for nav */
             padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
@@ -28,7 +30,7 @@
         }
 
         .logo {
-            color: #fff; /* White logo text */
+            color: #6a5acd; /* Purple logo text */
             font-size: 1.5rem;
             font-weight: 600;
             text-decoration: none;
@@ -39,16 +41,16 @@
             max-width: 500px; /* Slightly wider for better spacing */
             margin: 3rem auto; /* Adjusted top margin */
             padding: 2rem;
-            background: #fff;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            background: #262626; /* Dark background */
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
         }
 
         /* Tabs */
         .tabs {
             display: flex;
             margin-bottom: 1.5rem; /* Reduced margin */
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid #333; /* Dark border */
         }
 
         .tab {
@@ -57,17 +59,17 @@
             border: none;
             background: none;
             font-size: 1.1rem;
-            color: #777; /* Slightly darker text */
+            color: #bbb; /* Slightly darker text */
             transition: color 0.2s; /* Smooth color transition */
         }
 
         .tab:hover {
-            color: #333;
+            color: #6a5acd; /* Purple on hover */
         }
 
         .tab.active {
-            color: #333;
-            border-bottom: 3px solid #333;
+            color: #6a5acd; /* Purple active tab */
+            border-bottom: 3px solid #6a5acd;
             font-weight: 500;
         }
 
@@ -88,7 +90,7 @@
         label {
             display: block;
             margin-bottom: 0.3rem;
-            color: #444;
+            color: #bbb; /* Adjusted label color */
             font-size: 0.95rem;
             font-weight: 500;
         }
@@ -99,35 +101,37 @@
         select {
             width: 100%;
             padding: 0.6rem 0.75rem;
-            border: 1px solid #ccc;
+            border: 1px solid #444; /* Dark border */
             border-radius: 4px;
             font-size: 1rem;
-            color: #555;
+            color: #fff; /* White input text */
+            background-color: #333; /* Dark input background */
             transition: border-color 0.2s;
         }
 
         input:focus,
         select:focus {
             outline: none;
-            border-color: #555;
+            border-color: #6a5acd; /* Purple on focus */
         }
 
         /* Submit Button */
         button[type="submit"] {
             width: 100%;
             padding: 0.8rem;
-            background: #333; /* Darker button */
+            background: linear-gradient(135deg, #6a5acd, #4b0082); /* Purple gradient */
             color: #fff;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             font-size: 1.1rem;
             cursor: pointer;
             margin-top: 0.75rem;
             transition: background-color 0.2s;
+            font-weight: bold;
         }
 
         button[type="submit"]:hover {
-            background: #555;
+            background: linear-gradient(135deg, #4b0082, #6a5acd); /* Inverted gradient */
         }
 
         /* Helper Text */
@@ -139,16 +143,17 @@
         }
 
         .error-message {
-            color: red;
+            color: #e74c3c; /* Red error messages */
             font-size: 0.8rem;
             margin-top: 0.3rem;
         }
 
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <nav>
-        <a href="/" class="logo">testWALLET</a>
+        <a href="/" class="logo">Pixel Vault</a>
     </nav>
 
     <div class="auth-container">
@@ -185,25 +190,25 @@
                 <div class="form-group">
                     <label for="lastname">Last Name</label>
                     <input type="text" id="lastname" name="lastname" required>
-                     <div id="lastname-error" class="error-message"></div>
+                    <div id="lastname-error" class="error-message"></div>
                 </div>
                 <div class="form-group">
                     <label for="register-email">Email</label>
                     <input type="email" id="register-email" name="email" required>
-                     <div id="register-email-error" class="error-message"></div>
+                    <div id="register-email-error" class="error-message"></div>
                 </div>
                 <div class="form-group">
                     <label for="register-password">Password</label>
                     <input type="password" id="register-password" name="password" required>
-                     <div id="register-password-error" class="error-message"></div>
+                    <div id="register-password-error" class="error-message"></div>
                 </div>
                 <div class="form-group">
                     <label for="username">Username</label>
                     <input type="text" id="username" name="username" required>
-                     <div id="username-error" class="error-message"></div>
+                    <div id="username-error" class="error-message"></div>
                 </div>
                 <button type="submit">Register</button>
-                 <div id="register-error" class="error-message"></div>
+                <div id="register-error" class="error-message"></div>
             </form>
         </div>
     </div>

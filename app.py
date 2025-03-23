@@ -139,57 +139,65 @@ def login():
 
 
 # ✅ Register Route (Auto Redirect to Login) - CORRECTED + USDT ADDRESS GENERATION
-@app.route('/register', methods=['POST'])
+@app.route('/register', methods=['POST', 'GET'])
 def register():
-    data = request.get_json()
-    firstname, lastname, email, password, username = data.get('firstname'), data.get('lastname'), data.get('email'), data.get('password'), data.get('username')
+    if request.method == 'POST':
+        data = request.get_json()
+        firstname, lastname, email, password, username = data.get('firstname'), data.get('lastname'), data.get('email'), data.get('password'), data.get('username')
 
-    if not all([firstname, lastname, email, password, username]):
-        flash('All fields are required', 'error')
-        return redirect(url_for('register'))
-
-    conn = get_db_connection()
-    if not conn:
-        flash("Database connection failed", "error")
-        return redirect(url_for('register'))
-
-    cursor = conn.cursor()
-    try:
-        cursor.execute("SELECT user_id FROM users WHERE email = %s OR username = %s", (email, username))
-        if cursor.fetchone():
-            flash("Email or username already exists", "error")
+        if not all([firstname, lastname, email, password, username]):
+            flash('All fields are required', 'error')
             return redirect(url_for('register'))
 
-        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-        cursor.execute("INSERT INTO users (firstname, lastname, email, password, username) VALUES (%s, %s, %s, %s, %s)",
-                       (firstname, lastname, email, hashed_password, username))
-        user_id = cursor.lastrowid
+        conn = get_db_connection()
+        if not conn:
+            flash("Database connection failed", "error")
+            return redirect(url_for('register'))
 
-        btc_private, btc_public, btc_address = generate_btc_wallet()
-        eth_private, eth_public, eth_address = generate_eth_wallet()
-        usdt_private, usdt_public, usdt_address = generate_eth_wallet()  # ✅ Generate USDT address using Ethereum wallet generation
+        cursor = conn.cursor()
+        try:
+            cursor.execute("SELECT user_id FROM users WHERE email = %s OR username = %s", (email, username))
+            if cursor.fetchone():
+                flash("Email or username already exists", "error")
+                return redirect(url_for('register'))
 
-        wallets = [('BTC', btc_address, btc_private, btc_public),
-                   ('ETH', eth_address, eth_private, eth_public),
-                   ('USDT', usdt_address, usdt_private, usdt_public)]  # ✅ Include USDT wallet info
-        for currency, address, private_key, public_key in wallets:
-            cursor.execute(
-                "INSERT INTO wallets (user_id, currency_type, wallet_address, private_key, public_key) VALUES (%s, %s, %s, %s, %s)",
-                (user_id, currency, address, private_key, public_key))
+            hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+            cursor.execute("INSERT INTO users (firstname, lastname, email, password, username) VALUES (%s, %s, %s, %s, %s)",
+                           (firstname, lastname, email, hashed_password, username))
+            user_id = cursor.lastrowid
 
-        # *** ENSURE THIS PART IS PRESENT AND CORRECT ***
-        for currency in ["BTC", "ETH", "USDT"]:
-            cursor.execute("INSERT INTO balances (user_id, currency_type, balance) VALUES (%s, %s, 0.0)",
-                           (user_id, currency))
-        conn.commit()
-        # *** COMMIT IS CRUCIAL AFTER BALANCE INSERTS ***
+            btc_private, btc_public, btc_address = generate_btc_wallet()
+            eth_private, eth_public, eth_address = generate_eth_wallet()
+            usdt_private, usdt_public, usdt_address = generate_eth_wallet()  # ✅ Generate USDT address using Ethereum wallet generation
 
-        flash("Registration successful! Please log in.", "success")
-        return redirect(url_for('login'))  # ✅ Redirects to login page
+            wallets = [('BTC', btc_address, btc_private, btc_public),
+                       ('ETH', eth_address, eth_private, eth_public),
+                       ('USDT', usdt_address, usdt_private, usdt_public)]  # ✅ Include USDT wallet info
+            for currency, address, private_key, public_key in wallets:
+                cursor.execute(
+                    "INSERT INTO wallets (user_id, currency_type, wallet_address, private_key, public_key) VALUES (%s, %s, %s, %s, %s)",
+                    (user_id, currency, address, private_key, public_key))
 
-    finally:
-        cursor.close()
-        conn.close()
+            # *** ENSURE THIS PART IS PRESENT AND CORRECT ***
+            for currency in ["BTC", "ETH", "USDT"]:
+                cursor.execute("INSERT INTO balances (user_id, currency_type, balance) VALUES (%s, %s, 0.0)",
+                               (user_id, currency))
+            conn.commit()
+            # *** COMMIT IS CRUCIAL AFTER BALANCE INSERTS ***
+
+            flash("Registration successful! Please log in.", "success")
+            return redirect(url_for('login'))  # ✅ Redirects to login page
+
+        except Exception as e:
+            conn.rollback()
+            logging.error(f"Transaction failed: {e}")
+            flash("Transaction failed. Could not register", "error")
+            return jsonify({'error': f"Transaction failed: {str(e)}"}), 500
+
+        finally:
+            cursor.close()
+            conn.close()
+    return render_template('login.html')
 
 
 # ✅ Dashboard Route
@@ -266,7 +274,10 @@ def dashboard():
             })
 
         return render_template('dashboard.html', total_balance=total_balance_usd, username=session['username'],
-                               assets=assets)
+                               assets=assets,
+                               firstname=session.get('firstname', ''),
+                               lastname=session.get('lastname', ''),
+                               email=session.get('email', ''))
 
     except Exception as e:
         logging.error(f"Error fetching dashboard data: {e}")
@@ -287,6 +298,47 @@ def send():
 @app.route('/buycrypto')
 def buycrypto():
     return render_template('buycrypto.html')
+
+#  ✅ RECEIVE ROUTE
+@app.route('/receive')
+def receive():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    user_id = session['user_id']
+    conn = get_db_connection()
+    if not conn:
+        flash("Database connection failed", "error")
+        return render_template('receive.html', btc_address=None, eth_address=None, usdt_address=None, doge_address=None)
+
+    cursor = conn.cursor(dictionary=True)
+    try:
+        cursor.execute(
+            """
+            SELECT currency_type, wallet_address
+            FROM wallets
+            WHERE user_id = %s AND currency_type IN ('BTC', 'ETH', 'USDT', 'Dogecoin')
+            """,
+            (user_id,)
+        )
+        wallets = cursor.fetchall()
+
+        btc_address = next((w['wallet_address'] for w in wallets if w['currency_type'] == 'BTC'), None)
+        eth_address = next((w['wallet_address'] for w in wallets if w['currency_type'] == 'ETH'), None)
+        usdt_address = next((w['wallet_address'] for w in wallets if w['currency_type'] == 'USDT'), None)
+        doge_address = next((w['wallet_address'] for w in wallets if w['currency_type'] == 'Dogecoin'), None)
+
+        return render_template('receive.html', btc_address=btc_address, eth_address=eth_address,
+                               usdt_address=usdt_address, doge_address=doge_address)
+
+    except mysql.connector.Error as e:
+        logging.error(f"Database error: {e}")
+        flash("Error retrieving wallet addresses. Please try again.", "error")
+        return render_template('receive.html', btc_address=None, eth_address=None, usdt_address=None, doge_address=None)
+
+    finally:
+        cursor.close()
+        conn.close()
 
 
 # ✅ Logout
@@ -539,7 +591,13 @@ def send_crypto():
             cursor.close()
         if conn:
             conn.close()
+@app.route('/about')
+def about():
+    return render_template('aboutus.html')
 
+@app.route('/register', methods=['GET'])
+def show_register_form():
+    return render_template('login.html') #Changed to login.html to show register
 # ✅ Run App
 if __name__ == '__main__':
     app.run(debug=True)

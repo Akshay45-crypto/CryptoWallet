@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Vault - About Us</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* General Page Styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #121212;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            min-height: 100vh; /* Ensures the footer sticks to the bottom */
+            display: flex;
+            flex-direction: column; /* Allows the content to push the footer down */
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 1rem 2rem;
+            background: #1e1e1e;
+            color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-button {
+            color: #6a5acd;
+            text-decoration: none;
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            transition: opacity 0.2s;
+        }
+
+        .back-button:hover {
+            opacity: 0.7;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #262626;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            flex: 1; /* Allows the content to take up remaining space */
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #6a5acd;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            color: #f4f4f4;
+        }
+
+        p {
+            color: #bbb;
+            margin-bottom: 1.2rem;
+        }
+
+        /* Team Section */
+        .team-section {
+            margin-top: 2rem;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .team-member {
+            text-align: center;
+            padding: 1rem;
+            border-radius: 8px;
+            background: #333;
+        }
+
+        .team-member img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 0.5rem;
+        }
+
+        .team-member h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+            color: #f4f4f4;
+        }
+
+        .team-member p {
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        /* Social Media Links */
+        .social-links {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 1.5rem;
+        }
+
+        .social-links a {
+            color: #6a5acd;
+            margin: 0 0.8rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: #8e6dd5;
+        }
+        /* Footer */
+        footer {
+            background: #1e1e1e;
+            padding: 1rem;
+            text-align: center;
+            color: #bbb;
+            font-size: 0.85rem;
+        }
+
+        a {
+          text-decoration: none
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <a href="{{ url_for('home') }}" class="back-button">
+            ←
+        </a>
+        <h1>About Us</h1>
+    </header>
+
+    <main class="main-content">
+        <h2>Our Mission</h2>
+        <p>At Pixel Vault, our mission is to empower individuals to take control of their financial future through secure,
+            user-friendly cryptocurrency management. We strive to make digital assets accessible to everyone, regardless of their
+            technical expertise.</p>
+
+        <h2>Our Story</h2>
+        <p>Pixel Vault was founded in 2025 by a passionate blockchain enthusiast.
+            Recognizing the growing need for a secure and intuitive cryptocurrency wallet, we set out to create a platform that would
+            simplify the management of digital assets for users worldwide.</p>
+
+        <h2>Why Choose Pixel Vault?</h2>
+        <p>
+            <ul>
+                <li><strong>Security:</strong> We employ state-of-the-art security measures to protect your funds from unauthorized
+                    access.</li>
+                <li><strong>Ease of Use:</strong> Our platform is designed to be intuitive and user-friendly, even for beginners.</li>
+                <li><strong>Multi-Currency Support:</strong> We support a wide range of popular cryptocurrencies, allowing you to manage
+                    all your assets in one place.</li>
+                <li><strong>Transparency:</strong> We are committed to transparency and open communication with our users.</li>
+            </ul>
+        </p>
+
+        <div class="team-section">
+            <h2>Meet the Team</h2>
+            <div class="team-grid">
+                <div class="team-member">
+                    <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="Team Member 1">
+                    <h3>Akxxy</h3>
+                    <p>CEO & Founder</p>
+                </div>
+                <div class="team-member">
+                    <img src="https://randomuser.me/api/portraits/women/2.jpg" alt="Team Member 2">
+                    <h3>Jane Smith</h3>
+                    <p>Lead Developer</p>
+                </div>
+                <!-- Add more team members as needed -->
+            </div>
+        </div>
+
+        <div class="social-links">
+            <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+            <a href="https://github.com/Akshay45-crypto/CryptoWallet/tree/master" target="_blank"><i class="fab fa-github"></i></a>
+        </div>
+    </main>
+    <footer>
+        © 2024 Pixel Vault. All rights reserved.
+    </footer>
+</body>
+
+</html>

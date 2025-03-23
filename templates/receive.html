@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receive Crypto</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* General Page Styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #121212;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;  /* Use min-height for better responsiveness */
+        }
+
+        .container {
+            background: #222; /* Darker background */
+            padding: 25px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            width: 400px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #ddd; /* Lighter color */
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #aaa;
+            font-size: 14px;
+            text-align: left;
+        }
+
+        /* Custom Select Dropdown */
+        .custom-select {
+            display: flex;
+            align-items: center;
+            background: #333;
+            border-radius: 8px;
+            padding: 12px;
+            cursor: pointer;
+            border: 1px solid #444;
+            transition: 0.3s ease;
+            position: relative;
+            margin-bottom: 20px; /* add space for display */
+        }
+
+        .custom-select:hover {
+            border-color: #6a5acd;
+        }
+
+        .custom-select img {
+            width: 28px;
+            height: 28px;
+            margin-right: 12px;
+        }
+
+        select {
+            flex: 1;
+            border: none;
+            background: none;
+            font-size: 16px;
+            color: #fff;
+            cursor: pointer;
+            outline: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        /* Fix for select dropdown */
+        select option {
+            background: #1e1e1e;
+            /* Match container background */
+            color: #fff;
+            font-size: 16px;
+        }
+
+        /* Address Section */
+        .address-section {
+            background: #333; /* Darker background */
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .qr-code {
+            width: 120px;
+            height: 120px;
+            background: #fff;
+            /* Placeholder */
+            margin: 0 auto 10px;
+            border-radius: 8px;
+        }
+
+        .address {
+            word-break: break-all;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            color: #ddd;
+        }
+
+       .copy-button {
+        background: linear-gradient(135deg, #6a5acd, #4b0082); /* Gradient background */
+        color: #fff;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .copy-button:hover {
+        background: linear-gradient(135deg, #4b0082, #6a5acd); /* Darker gradient on hover */
+    }
+
+        .min-deposit {
+            font-size: 0.7em;
+            color: #999;
+            margin-top: 10px;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #6a5acd;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .contract-note {
+            font-size: 0.8em;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        /* New styles for coin display */
+        .coin-display {
+            text-align: center;
+            margin: 20px 0 30px 0;
+        }
+
+        .coin-display img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            margin-bottom: 15px;
+            object-fit: contain;
+            background-color: #444; /* Dark background */
+            padding: 10px;
+        }
+
+        .coin-display h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #ddd;
+        }
+
+        .coin-display p {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .coin-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .coin-tab {
+            padding: 8px 15px;
+            background: #444; /* Dark Background */
+            color: #aaa;
+            border: 1px solid #555; /* Dark border */
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+        }
+
+        .coin-tab:hover {
+            background: #555; /* Dark background */
+            color: #ccc;
+        }
+
+        .coin-tab.active {
+            background: linear-gradient(135deg, #6a5acd, #4b0082); /* Gradient background */
+            color: #fff;
+            border-color: transparent;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Receive Crypto</h2>
+        <div class="coin-tabs">
+            <div class="coin-tab active" onclick="showCoin('btc')">BTC</div>
+            <div class="coin-tab" onclick="showCoin('usdt')">USDT</div>
+            <div class="coin-tab" onclick="showCoin('eth')">ETH</div>
+           
+        </div>
+        <!-- Coin Display Areas -->
+        <div id="btc-display" class="coin-display" style="display: block;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/1200px-Bitcoin.svg.png" alt="Bitcoin">
+            <h3>Bitcoin (BTC)</h3>
+            <p>Your BTC wallet address is:</p>
+            <p> <span id = "btc_wallet_address"> {{ btc_address or 'N/A' }} </span> <button class="copy-button" onclick="copyAddress('{{ btc_address }}')">Copy</button></p>
+             <div class="min-deposit">Minimum deposit More than 0.0001 BTC</div>
+        </div>
+
+        <div id="usdt-display" class="coin-display">
+            <img src="https://cryptologos.cc/logos/tether-usdt-logo.png?v=026" alt="Tether" width="100">
+            <h3>Tether (USDT)</h3>
+            <p>Your USDT wallet address is:</p>
+            <p>
+                <span id="usdt_wallet_address"> {{ usdt_address or 'N/A' }} </span>
+                <button class="copy-button" onclick="copyAddress('{{ usdt_address }}')">Copy</button>
+            </p>
+            <div class="min-deposit">Minimum deposit More than 0.01 USDT</div>
+        </div>
+
+
+        <div id="eth-display" class="coin-display">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ethereum-icon-purple.svg/1200px-Ethereum-icon-purple.svg.png" alt="Ethereum">
+            <h3>Ethereum (ETH)</h3>
+            <p>Your ETH wallet address is:</p>
+            <p> <span id = "eth_wallet_address"> {{ eth_address or 'N/A' }} </span><button class="copy-button" onclick="copyAddress('{{ eth_address }}')">Copy</button></p>
+               <div class="min-deposit">Minimum deposit More than 0.001 ETH</div>
+        </div>
+        
+        <a href="{{ url_for('dashboard') }}" class="back-link">Back to Dashboard</a>
+    </div>
+
+    <script>
+        function copyAddress(address) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(address)
+                    .then(() => {
+                        alert('Address copied to clipboard!');
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy: ', err);
+                        alert('Failed to copy address. Please try again.');
+                    });
+            } else {
+                alert('Clipboard API not available. Please manually copy the address.');
+            }
+        }
+
+        function showCoin(coinType) {
+            // Hide all coin displays
+            document.querySelectorAll('.coin-display').forEach(display => {
+                display.style.display = 'none';
+            });
+
+            // Show the selected coin display
+            document.getElementById(coinType + '-display').style.display = 'block';
+
+            // Update tab active states
+            document.querySelectorAll('.coin-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            // Find the clicked tab and make it active
+            event.target.classList.add('active');
+        }
+        // Default to showing Bitcoin when opening
+        document.addEventListener('DOMContentLoaded', function() {
+            showCoin('btc');  // Or whatever default you prefer
+        });
+    </script>
+</body>
+
+</html>
