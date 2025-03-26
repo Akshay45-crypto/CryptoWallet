@@ -153,6 +153,22 @@
             display: block;
             /* Show if active */
         }
+
+        /* Style for the popup */
+        .popup {
+            position: fixed;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #6a5acd, #4b0082);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            display: none;
+            /* Hidden by default */
+        }
     </style>
 </head>
 
@@ -188,6 +204,8 @@
 
         <a href="{{ url_for('home') }}" class="back-link">Back to Wallet</a>
     </div>
+
+    <div id="popup" class="popup"></div>
 
     <script>
         function updateIcon() {
@@ -245,7 +263,18 @@
             }
         }
 
-        function sendCrypto() {
+        function showPopup(message) {
+            const popup = document.getElementById("popup");
+            popup.textContent = message;
+            popup.style.display = "block"; // Make it visible
+
+            // Hide after 3 seconds (3000 milliseconds)
+            setTimeout(() => {
+                popup.style.display = "none"; // Hide it again
+            }, 3000);
+        }
+
+        async function sendCrypto() {
             const coin = document.getElementById("sendSelectCoin").value;
             const amount = parseFloat(document.getElementById("sendAmount").value);
             const address = document.getElementById("receiverAddress").value;
@@ -258,15 +287,15 @@
             let coinType = selectedOption.value;
 
             if (!amount || !address) {
-                alert("Please enter all details.");
+                showPopup("Please enter all details.");
                 return;
             }
             if (addressValidationMessage.classList.contains("active")) {
-                alert("Please enter a valid wallet address.");
+                showPopup("Please enter a valid wallet address.");
                 return;
             }
             if (amountValidationMessage.classList.contains("active")) {
-                alert(`Please enter an amount greater than or equal to the minimum amount which is ${minAmount} for ${coinType}.`);
+                showPopup(`Please enter an amount greater than or equal to the minimum amount which is ${minAmount} for ${coinType}.`);
                 return;
             }
 
@@ -279,45 +308,53 @@
             };
 
             // Send data to the backend using fetch
-            fetch('/send_crypto', {  // Replace '/send_crypto' with your actual backend endpoint
+            try {
+                const response = await fetch('/send_crypto', {  // Replace '/send_crypto' with your actual backend endpoint
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(sendData)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert(data.message); // Display success message
-                        // Optionally redirect or update the UI
-                    } else {
-                        alert(data.error); // Display error message
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred while processing your request.');
                 });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showPopup(data.message); // Display success message
+                    // Optionally redirect or update the UI
+                } else {
+                    showPopup(data.error); // Display error message
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showPopup('An error occurred while processing your request.');
+            }
+
             // *** END NEW CODE ***
         }
 
-        // Implement functions to validate different types of addresses
         function isValidBitcoinAddress(address) {
-            // From https://github.com/bitcoinjs/bitcoinjs-lib
+            if (typeof bitcoin === 'undefined' || !bitcoin.address || !bitcoin.address.toOutputScript) {
+                console.warn("bitcoinjs-lib not fully loaded yet. Will retry in 100ms.");
+                setTimeout(() => {
+                    isValidBitcoinAddress(address); // Re-trigger validation
+                }, 100);
+                return false;
+            }
+
             try {
-                //Try to decode the address using both Base58 and Bech32 formats.
-                 bitcoin.address.toOutputScript(address, bitcoin.networks.bitcoin);
+                // Try validating with multiple formats (P2PKH, P2SH, Bech32)
+                bitcoin.address.toOutputScript(address, bitcoin.networks.bitcoin);
+                console.log("Address is valid");
                 return true;
             } catch (e) {
-              try{
-                 bitcoin.address.toOutputScript(address, bitcoin.networks.testnet);
-                 return true
-              }catch(e){
+                console.error("Address is invalid:", e.message);
                 return false;
-              }
-
             }
+        }
+
+        function isValidBitcoinAddress(address) {
+            return /^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$/.test(address);
         }
 
         function isValidEthereumAddress(address) {
@@ -335,7 +372,7 @@
             return /^D[A-Za-z0-9]{33}$/.test(address);
         }
     </script>
-     <script src="https://cdn.jsdelivr.net/npm/bitcoinjs-lib@6.1.0/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bitcoinjs-lib@6.1.0/index.min.js"></script>
 </body>
 
 </html>

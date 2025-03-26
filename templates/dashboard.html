@@ -15,8 +15,10 @@
         }
 
         body {
-            background: #f5f5f5;
-            /* Changed to a light gray */
+            background: #121212;
+            /* Dark background */
+            color: #fff;
+            /* Light text color */
         }
 
         /* Updated styles */
@@ -24,7 +26,8 @@
             display: flex;
             align-items: center;
             padding: 1rem 2rem;
-            background: rgb(0, 0, 0);
+            background: #1e1e1e;
+            /* Darker header background */
             color: white;
         }
 
@@ -51,33 +54,44 @@
             max-width: 1000px;
             margin: 2rem auto;
             padding: 0 2rem;
-            display: flex; /* Enable flexbox for main container */
-            gap: 2rem; /* Add gap between balance card/assets and transactions */
+            display: flex;
+            /* Enable flexbox for main container */
+            gap: 2rem;
+            /* Add gap between balance card/assets and transactions */
         }
 
         .balance-and-assets {
-            flex: 2; /* Take up 2/3 of the space */
+            flex: 2;
+            /* Take up 2/3 of the space */
         }
 
         .transactions {
-            flex: 1; /* Take up 1/3 of the space */
-            background: white;
+            flex: 1;
+            /* Take up 1/3 of the space */
+            background: #252525;
+            /* Darker transaction background */
+            color: #ddd;
             padding: 1.5rem;
             border-radius: 12px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            overflow-y: auto; /* Enable scrolling if transactions overflow */
-            max-height: 500px; /* Limit the height of the container */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            /* Increased shadow for dark theme */
+            overflow-y: auto;
+            /* Enable scrolling if transactions overflow */
+            max-height: 500px;
+            /* Limit the height of the container */
         }
 
         .transactions h2 {
             font-size: 1.1rem;
             font-weight: 500;
             margin-bottom: 1.5rem;
+            color: #fff;
         }
 
         .transaction-item {
             padding: 0.75rem 0;
-            border-bottom: 1px solid #eaeaea;
+            border-bottom: 1px solid #444;
+            /* Darker border */
             font-size: 0.9rem;
             line-height: 1.4;
         }
@@ -85,16 +99,19 @@
         .transaction-item:last-child {
             border-bottom: none;
         }
+
         .balance-card {
-            background: white;
+            background: #252525;
+            /* Darker balance card background */
             padding: 2rem;
             border-radius: 12px;
             margin-bottom: 2rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Added subtle shadow */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            /* Increased shadow for dark theme */
         }
 
         .balance-label {
-            color: #666;
+            color: #999;
             margin-bottom: 0.5rem;
         }
 
@@ -108,8 +125,9 @@
             display: flex;
             gap: 1rem;
             flex-wrap: wrap;
-             /* Added to keep buttons within the card */
-            justify-content: flex-start; /* Align buttons to the left */
+            /* Added to keep buttons within the card */
+            justify-content: flex-start;
+            /* Align buttons to the left */
         }
 
         .action-btn {
@@ -117,7 +135,8 @@
             align-items: center;
             gap: 0.5rem;
             padding: 0.75rem 1.5rem;
-            background: black;
+            background: #673ab7;
+            /* Blue-purple button color */
             color: white;
             border: none;
             border-radius: 6px;
@@ -128,6 +147,7 @@
 
         .action-btn:hover {
             opacity: 0.9;
+            background: #512da8;
         }
 
         .action-btn svg {
@@ -136,10 +156,12 @@
         }
 
         .assets-card {
-            background: rgb(255, 255, 255);
+            background: #252525;
+            /* Darker asset card background */
             padding: 1.5rem;
             border-radius: 12px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Added subtle shadow */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            /* Increased shadow for dark theme */
             /* Ensure the width matches the balance card */
             width: 100%;
         }
@@ -148,6 +170,7 @@
             font-size: 1.1rem;
             font-weight: 500;
             margin-bottom: 1.5rem;
+            color: #fff;
         }
 
         .asset-item {
@@ -155,7 +178,8 @@
             justify-content: space-between;
             align-items: center;
             padding: 1rem 0;
-            border-bottom: 1px solid #eaeaea;
+            border-bottom: 1px solid #444;
+            /* Darker border */
         }
 
         .asset-info {
@@ -174,11 +198,14 @@
             font-weight: 500;
         }
 
-        .asset-icon img { /* Style for logo images */
+        .asset-icon img {
+            /* Style for logo images */
             width: 100%;
             height: 100%;
-            border-radius: 50%; /* Ensure image is circular */
-            object-fit: cover; /* Prevents image distortion */
+            border-radius: 50%;
+            /* Ensure image is circular */
+            object-fit: cover;
+            /* Prevents image distortion */
         }
 
         .asset-details h3 {
@@ -187,7 +214,7 @@
         }
 
         .asset-amount {
-            color: #666;
+            color: #999;
             font-size: 0.9rem;
         }
 
@@ -210,16 +237,21 @@
 
         /* Popup Styles */
         .profile-popup {
-            position: absolute; /* Relative to the profile-image */
-            top: 100%; /* Position below the image */
-            right: 0; /* Align to the right edge of the image */
-            background: #f2f2f2;
-            /* Light gray background */
+            position: absolute;
+            /* Relative to the profile-image */
+            top: 100%;
+            /* Position below the image */
+            right: 0;
+            /* Align to the right edge of the image */
+            background: #333;
+            /* Darker gray background */
+            color: #fff;
             padding: 1rem;
-            border: 1px solid #ccc;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid #555;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
             /* Stronger shadow */
-            z-index: 1000; /* Ensure it's on top of everything */
+            z-index: 1000;
+            /* Ensure it's on top of everything */
             display: none;
             /* Hidden by default */
             width: 300px;
@@ -233,9 +265,9 @@
             margin-bottom: 0.5rem;
             /* Reduced margin */
             font-size: 1rem;
-            color: #333;
-            /* Darker text */
-            border-bottom: 1px solid #ddd;
+            color: #eee;
+            /* Lighter text */
+            border-bottom: 1px solid #555;
             /* Add a subtle divider */
             padding-bottom: 0.3rem;
         }
@@ -243,21 +275,21 @@
         .profile-popup p {
             margin-bottom: 0.3rem;
             /* Reduced margin */
-            color: #555;
+            color: #ccc;
         }
 
         .profile-popup p strong {
             font-weight: bold;
-            color: black;
+            color: #fff;
         }
 
         .profile-popup .wallet-addresses {
             margin-bottom: 0.5rem;
             /* Reduced margin */
-            border: 1px solid #ddd;
-            /* Light border */
+            border: 1px solid #555;
+            /* Dark border */
             padding: 0.5rem;
-            background: #fff;
+            background: #444;
             /* White background for contrast */
             border-radius: 5px;
         }
@@ -276,8 +308,9 @@
         }
 
         .profile-popup .wallet-addresses button {
-            background: #ddd;
+            background: #555;
             /* Lighter gray button */
+            color: #fff;
             border: none;
             padding: 0.3rem 0.5rem;
             cursor: pointer;
@@ -289,7 +322,7 @@
         }
 
         .profile-popup .wallet-addresses button:hover {
-            background-color: #ccc;
+            background-color: #666;
             /* Darker gray on hover */
         }
 
@@ -310,7 +343,7 @@
             cursor: pointer;
             font-size: 1.2rem;
             /* Increased size */
-            color: #777;
+            color: #999;
             /* Gray color */
             transition: color 0.2s;
             /* Smooth hover effect */
@@ -324,7 +357,7 @@
         }
 
         .profile-popup .close-button:hover {
-            color: #333;
+            color: #ccc;
             /* Darker gray on hover */
         }
 
@@ -335,7 +368,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.8);
             /* Slightly darker overlay */
             z-index: 1000;
             display: none;
@@ -487,9 +520,10 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: white;
+            background: #252525; /* Darker background */
+            color: #fff;
             padding: 20px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* Increased shadow */
             border-radius: 10px;
             width: 300px;
             z-index: 1000;
@@ -499,6 +533,7 @@
             float: right;
             cursor: pointer;
             font-size: 20px;
+            color: #ddd;
         }
 
         input,
@@ -506,30 +541,39 @@
             width: 100%;
             padding: 10px;
             margin: 10px 0;
-            border: 1px solid #ddd;
+            border: 1px solid #444;
+            background-color: #333;
+            color: #fff;
             border-radius: 5px;
         }
 
         .send-button {
             width: 100%;
             padding: 10px;
-            background: blueviolet;
+            background: #673ab7; /* Blue-purple */
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
         }
+        .send-button:hover{
+           background: #512da8;
+        }
 
         .action-btn {
             display: flex;
             align-items: center;
-            background: blueviolet;
+            background: #673ab7;
+            /* Blue-purple */
             color: rgb(255, 255, 255);
             border: none;
             padding: 10px 15px;
             border-radius: 5px;
             cursor: pointer;
             gap: 8px;
+        }
+         .action-btn:hover{
+           background: #512da8;
         }
 
         .action-btn svg {
@@ -625,16 +669,33 @@
         </div>
         <div class="transactions">
             <h2>Transaction History</h2>
+            <pre>{{ transactions }}</pre> <!-- Debugging: Print raw transactions -->
+        
             {% if transactions %}
-                {% for transaction in transactions %}
-                    <div class="transaction-item">
-                        {{ transaction.description }} - {{ transaction.date }}
-                    </div>
-                {% endfor %}
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Description</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for transaction in transactions %}
+                            <tr>
+                                <td>{{ transaction.id }}</td>
+                                <td>{{ transaction.description }}</td>
+                                <td>{{ transaction.date }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             {% else %}
                 <p>No transactions yet.</p>
             {% endif %}
         </div>
+        
+        
     </div>
 
     <!-- Receive Popup -->
@@ -722,8 +783,8 @@
             </div>
             <div>
                 <p>
-                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/9/94/Usdt_logo.svg/480px-Usdt_logo.svg.png"
-                        alt="USDT Icon" />
+                    <img src="https://assets.coingecko.com/coins/images/325/small/Tether-logo.png?1668148644"
+                         alt="USDT Icon" />
                     USDT: [USDT address placeholder]
                 </p>
                 <button onclick="copyAddress('usdt_address')">Copy</button>
